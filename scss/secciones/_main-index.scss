@@ -1,0 +1,64 @@
+#main-index {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+h2 {
+  color: #555;
+}
+
+ol,
+ul {
+  margin-left: 20px;
+}
+
+img {
+  max-width: 40%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+p {
+  text-align: center;
+}
+
+form {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+  color: #333;
+}
+
+input,
+select {
+  width: 20%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
