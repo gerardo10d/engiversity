@@ -28,13 +28,13 @@ class CapaPavimento {
       calcSN =
         -1 +
         10 **
-          ((Math.log10(nese) +
-            zr * s0 -
-            2.32 * Math.log10(moduloInfPsi) +
-            8.27 -
-            Math.log10(perdidaServ / 2.7) /
-              (0.4 + 1094 / (semillaSN + 1) ** 5.19)) /
-            9.36);
+        ((Math.log10(nese) +
+          zr * s0 -
+          2.32 * Math.log10(moduloInfPsi) +
+          8.27 -
+          Math.log10(perdidaServ / 2.7) /
+          (0.4 + 1094 / (semillaSN + 1) ** 5.19)) /
+          9.36);
       error = (Math.abs(calcSN - semillaSN) / calcSN) * 100;
       semillaSN = calcSN;
       i++;
@@ -74,13 +74,13 @@ class CapaPavimento {
 function inicializarBoton() {
   const boton = document.getElementById("boton-calcular");
   boton.addEventListener("click", () => {
-    
     // Datos de entrada solicitados al usuario---------------------------------------------
     const nese = parseFloat(document.getElementById("nese").value) * 1e6;
     // const n = tpd <= 5000 ? 10 : 15; // Periodo de diseño de 10 años con TPD menor o igual a 5000, o 15 años en caso contrario
     // const n = parseFloat(document.getElementById("n").value);
     const confiabilidad = parseFloat(document.getElementById("R").value); // Confiabilidad del cálculo (r)
-    const carreteraGrande = document.getElementById("tipoCarretera").value === "grande"; // ¿Es carretera grande o pequeña?
+    const carreteraGrande =
+      document.getElementById("tipoCarretera").value === "grande"; // ¿Es carretera grande o pequeña?
     // Módulos de las capas del pavimento
     const moduloCapa1 = parseFloat(document.getElementById("modulo1").value); //MPa
     const moduloCapa2 = parseFloat(document.getElementById("modulo2").value); //MPa
@@ -105,22 +105,56 @@ function inicializarBoton() {
     //     (((tpd * pvp * 365 * fd * fca * (-1 + (1 + r) ** n)) / r) * fc) / 1e4
     //   ) * 1e4;
 
-    // Resultados
-    const capa1 = new CapaPavimento(moduloCapa1);
-    const capa2 = new CapaPavimento(moduloCapa2, m);
-    const capa3 = new CapaPavimento(moduloCapa3, m);
-    capa1.resolverCapa(nese, zr, carreteraGrande, 1, moduloCapa2);
-    capa2.resolverCapa(nese, zr, carreteraGrande, 2, moduloCapa3, capa1.SNcorregido);
-    capa3.resolverCapa(nese, zr, carreteraGrande, 3, moduloCapa4, capa2.SNcorregido);
-    document.getElementById("resultado").innerText = `Primera capa: SNe: ${capa1.SNe} - Espesor ${capa1.dCorregidoCm} cm - SNcorregido: ${capa1.SNcorregido}\nSegunda capa: SNe: ${capa2.SNe} - Espesor ${capa2.dCorregidoCm} cm - SNcorregido: ${capa2.SNcorregido}\nTercera capa: SNe: ${capa3.SNe} - Espesor ${capa3.dCorregidoCm} cm - SNcorregido: ${capa3.SNcorregido}`;
-    // alert(
-    //   "Espesores constructivos de las capas del pavimento:\nPrimera capa: " +
-    //   capa1.dCorregidoCm +
-    //   " cm\nSegunda capa: " +
-    //   capa2.dCorregidoCm +
-    //   " cm\nTercera capa: " +
-    //   capa3.dCorregidoCm
-    //   + " cm");
+    // Resultados-----------------------------------------------------------------------
+    const capas = [
+      new CapaPavimento(moduloCapa1),
+      new CapaPavimento(moduloCapa2, m),
+      new CapaPavimento(moduloCapa3, m)
+    ]
+
+    capas[0].resolverCapa(nese, zr, carreteraGrande, 1, moduloCapa2);
+    capas[1].resolverCapa(nese, zr, carreteraGrande, 2, moduloCapa3, capas[0].SNcorregido);
+    capas[2].resolverCapa(nese, zr, carreteraGrande, 3, moduloCapa4, capas[1].SNcorregido);
+
+    const contenedorResultados = document.querySelector(".grid-container");
+    contenedorResultados.innerHTML = "";
+    // Divs con títulos----------------------------------------------------------------------
+    const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"];
+    for (const titulo of titulos) {
+      const divTitulo = document.createElement("div");
+      divTitulo.className = "grid-item titulo-result";
+      divTitulo.innerText = titulo;
+      contenedorResultados.append(divTitulo);
+    }
+
+    // Recorrer array con las capas ya resueltas------------------------------------------
+    for (const capa of capas) {
+      // Div con el número de la capa--------------------
+      const divCapa = document.createElement("div");
+      divCapa.className = "grid-item";
+      divCapa.innerText = capas.indexOf(capa) + 1;
+      contenedorResultados.append(divCapa);
+
+      // Div con el SNe de la capa------------------------
+      const divSNe = document.createElement("div");
+      divSNe.className = "grid-item";
+      divSNe.innerText = capa.SNe;
+      contenedorResultados.append(divSNe);
+
+      // Div con el espesor de la capa--------------------
+      const divEspesor = document.createElement("div");
+      divEspesor.className = "grid-item";
+      divEspesor.innerText = capa.dCorregidoCm;
+      contenedorResultados.append(divEspesor);
+
+      // Div con el SNcorregido de la capa----------------
+      const divSNcorregido = document.createElement("div");
+      divSNcorregido.className = "grid-item";
+      divSNcorregido.innerText = capa.SNcorregido;
+      contenedorResultados.append(divSNcorregido);
+    }
+
+    // document.getElementById("resultado").innerText = `Primera capa: SNe: ${capa1.SNe} - Espesor ${capa1.dCorregidoCm} cm - SNcorregido: ${capa1.SNcorregido}\nSegunda capa: SNe: ${capa2.SNe} - Espesor ${capa2.dCorregidoCm} cm - SNcorregido: ${capa2.SNcorregido}\nTercera capa: SNe: ${capa3.SNe} - Espesor ${capa3.dCorregidoCm} cm - SNcorregido: ${capa3.SNcorregido}`;
   });
 }
 
