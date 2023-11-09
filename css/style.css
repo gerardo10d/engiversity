@@ -27,10 +27,8 @@
 
 #main-index {
   margin: 0 auto;
-  padding: 1rem;
-  width: 90%;
-  max-width: 60rem;
-  background-color: #c5e0d8; }
+  padding: 1.25rem;
+  max-width: 60rem; }
   #main-index h1 {
     text-align: center;
     margin-bottom: 1rem; }
