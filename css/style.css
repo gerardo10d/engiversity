@@ -13,17 +13,23 @@
 
 #header ul {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   list-style: none;
   background-color: #444545; }
-  #header ul li {
-    margin: 1rem 2rem; }
-    #header ul li a {
-      text-decoration: none;
-      color: #b5ffe9; }
-      #header ul li a:visited {
-        color: #c5e0d8; }
-      #header ul li a:hover {
-        color: #ceabb1; }
+  #header ul li a {
+    text-decoration: none;
+    color: #b5ffe9; }
+    #header ul li a:visited {
+      color: #c5e0d8; }
+    #header ul li a:hover {
+      color: #ceabb1; }
+
+@media (min-width: 30rem) {
+  #header ul {
+    flex-direction: row; }
+    #header ul li {
+      margin: 0.5rem 1rem; } }
 
 #main-index {
   margin: 0 auto;

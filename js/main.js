@@ -127,7 +127,8 @@ function inicializarBoton() {
       contenedorResultados.append(divTitulo);
     }
 
-    // Recorrer array con las capas ya resueltas------------------------------------------
+    // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
+    const mensajeError = "Error";
     for (const capa of capas) {
       // Div con el número de la capa--------------------
       const divCapa = document.createElement("div");
@@ -138,19 +139,19 @@ function inicializarBoton() {
       // Div con el SNe de la capa------------------------
       const divSNe = document.createElement("div");
       divSNe.className = "grid-item";
-      divSNe.innerText = capa.SNe;
+      divSNe.innerText = (capa.SNe || mensajeError);
       contenedorResultados.append(divSNe);
 
       // Div con el espesor de la capa--------------------
       const divEspesor = document.createElement("div");
       divEspesor.className = "grid-item";
-      divEspesor.innerText = capa.dCorregidoCm;
+      divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
       contenedorResultados.append(divEspesor);
 
       // Div con el SNcorregido de la capa----------------
       const divSNcorregido = document.createElement("div");
       divSNcorregido.className = "grid-item";
-      divSNcorregido.innerText = capa.SNcorregido;
+      divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
       contenedorResultados.append(divSNcorregido);
     }
 
