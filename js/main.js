@@ -71,7 +71,7 @@ class CapaPavimento {
 }
 
 // Funciones
-function inicializarBoton() {
+function inicializarBotonCalcular() {
   const boton = document.getElementById("boton-calcular");
   boton.addEventListener("click", () => {
     // Datos de entrada solicitados al usuario---------------------------------------------
@@ -159,6 +159,15 @@ function inicializarBoton() {
   });
 }
 
+function inicializarBotonHamburguesa() {
+  const boton = document.getElementById("boton-hamburguesa");
+  boton.addEventListener("click", () => {
+    const navbar = document.getElementById("navbar");
+    navbar.className = "abierto";
+  })
+
+}
+
 // Inicio del programa
 const desvNormalEstandar = [
   { r: 50.0, zr: 0.0 },
@@ -179,4 +188,5 @@ const espesoresConstructivosCapas = [
   [15, 20, 25, 30],
   [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
 ];
-inicializarBoton();
+inicializarBotonCalcular();
+inicializarBotonHamburguesa();
