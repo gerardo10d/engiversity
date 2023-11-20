@@ -1,30 +1,16 @@
 nav.navbar {
-  overflow: hidden;
-  h1 {
-    // estilos del h1
-  }
-  button.navbar-boton {
-    display: none;
-    cursor: pointer;
-    height: 1.8rem;
-    background-color: $color3;
-    border-radius: 0.25rem;
-    img {
-      height: 1.5rem;
-    }
-  }
   ul.navbar-lista {
     display: flex;
-    // flex-direction: column;
-    // align-items: center;
+    flex-direction: column;
+    align-items: center;
     list-style: none;
     background-color: $color1;
     li {
-      flex: 1;
-      // margin: 1rem 2rem;
-      // display: none;
+      h1 {
+        color: $color2;
+      }
+      margin: 0.1rem 1rem;
       a {
-        display: block;
         text-decoration: none;
         color: $color2;
         &:visited {
@@ -39,11 +25,8 @@ nav.navbar {
 
   // Para pantallas grandes (más de 480 px de ancho)
   @media (min-width: 30rem) {
-    ul {
+    ul.navbar-lista {
       flex-direction: row;
-      li {
-        margin: 0.5rem 1rem;
-      }
     }
   }
 }

@@ -1,0 +1,110 @@
+#main-pavimentos {
+  margin: 0 auto;
+  padding: 1.25rem;
+
+  // Para todas las secciones
+  section {
+    max-width: 50rem;
+    width: 98%;
+    margin: auto;
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      text-align: center;
+      margin: 1rem auto;
+    }
+  }
+  
+  // Para la primera sección
+  section.espesores-constructivos {
+    img {
+      width: 90%;
+      max-width: 35rem;
+      display: block;
+      margin: 1rem auto;
+    }
+    p {
+      text-align: center;
+      a {
+        text-decoration: none;
+        color: $color2;
+        &:visited {
+          color: $color1;
+        }
+        &:hover {
+          color: $color5;
+        }
+      }
+    }
+  }
+
+  section.datos-entrada {
+    form {
+      display: flex;
+      justify-content: space-evenly;
+      max-width: 50rem;
+      width: 90%;
+      margin: 1rem auto;
+      div {
+        label {
+          display: block;
+          margin: 1rem 0.2rem 0;
+          color: $color1;
+        }
+        input {
+          max-width: 10rem;
+          width: 50%;
+          padding: 1rem;
+          margin: 0.5rem 0;
+          border: 1px solid $color1;
+          border-radius: 0.4rem;
+        }
+        select {
+          max-width: 10rem;
+          min-width: 5rem;
+          width: 70%;
+          padding: 1rem;
+          margin: 0.5rem 0;
+          border: 1px solid $color1;
+          border-radius: 0.4rem;
+        }
+      }
+    }
+    .botones {
+      display: flex;
+      justify-content: space-evenly;
+      button {
+        display: block;
+        margin: 2rem auto;
+        background-color: $color5;
+        color: $color1;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        &:hover {
+          background-color: $color2;
+        }
+      }
+    }
+  }
+
+  section.resultados {
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 2fr 2fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      justify-items: center;
+      max-width: 30rem;
+      margin: 1rem auto;
+      .titulo-result {
+        font-weight: bold;
+        margin: 0 0.2rem;
+        // min-width: 5rem;
+        text-align: center;
+      }
+    }
+  }
+}

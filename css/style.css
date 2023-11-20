@@ -11,35 +11,27 @@
   padding: 0;
   font-family: 'Proza Libre', sans-serif; }
 
-nav.navbar {
-  overflow: hidden; }
-  nav.navbar button.navbar-boton {
-    display: none;
-    cursor: pointer;
-    height: 1.8rem;
-    background-color: #c5e0d8;
-    border-radius: 0.25rem; }
-    nav.navbar button.navbar-boton img {
-      height: 1.5rem; }
+nav.navbar ul.navbar-lista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  background-color: #444545; }
+  nav.navbar ul.navbar-lista li {
+    margin: 0.1rem 1rem; }
+    nav.navbar ul.navbar-lista li h1 {
+      color: #b5ffe9; }
+    nav.navbar ul.navbar-lista li a {
+      text-decoration: none;
+      color: #b5ffe9; }
+      nav.navbar ul.navbar-lista li a:visited {
+        color: #c5e0d8; }
+      nav.navbar ul.navbar-lista li a:hover {
+        color: #ceabb1; }
+
+@media (min-width: 30rem) {
   nav.navbar ul.navbar-lista {
-    display: flex;
-    list-style: none;
-    background-color: #444545; }
-    nav.navbar ul.navbar-lista li {
-      flex: 1; }
-      nav.navbar ul.navbar-lista li a {
-        display: block;
-        text-decoration: none;
-        color: #b5ffe9; }
-        nav.navbar ul.navbar-lista li a:visited {
-          color: #c5e0d8; }
-        nav.navbar ul.navbar-lista li a:hover {
-          color: #ceabb1; }
-  @media (min-width: 30rem) {
-    nav.navbar ul {
-      flex-direction: row; }
-      nav.navbar ul li {
-        margin: 0.5rem 1rem; } }
+    flex-direction: row; } }
 
 #main-index {
   margin: 0 auto;
@@ -51,41 +43,61 @@ nav.navbar {
     #main-index section h1 {
       text-align: center;
       margin-bottom: 1rem; }
-    #main-index section h2 {
+    #main-index section p {
+      text-align: start; }
+      #main-index section p a {
+        text-decoration: none;
+        color: #b5ffe9; }
+        #main-index section p a:visited {
+          color: #444545; }
+        #main-index section p a:hover {
+          color: #ceabb1; }
+
+#main-pavimentos {
+  margin: 0 auto;
+  padding: 1.25rem; }
+  #main-pavimentos section {
+    max-width: 50rem;
+    width: 98%;
+    margin: auto; }
+    #main-pavimentos section h1 {
+      text-align: center;
+      margin-bottom: 1rem; }
+    #main-pavimentos section h2 {
       text-align: center;
       margin: 1rem auto; }
-  #main-index section.espesores-constructivos img {
+  #main-pavimentos section.espesores-constructivos img {
     width: 90%;
     max-width: 35rem;
     display: block;
     margin: 1rem auto; }
-  #main-index section.espesores-constructivos p {
+  #main-pavimentos section.espesores-constructivos p {
     text-align: center; }
-    #main-index section.espesores-constructivos p a {
+    #main-pavimentos section.espesores-constructivos p a {
       text-decoration: none;
       color: #b5ffe9; }
-      #main-index section.espesores-constructivos p a:visited {
+      #main-pavimentos section.espesores-constructivos p a:visited {
         color: #444545; }
-      #main-index section.espesores-constructivos p a:hover {
+      #main-pavimentos section.espesores-constructivos p a:hover {
         color: #ceabb1; }
-  #main-index section.datos-entrada form {
+  #main-pavimentos section.datos-entrada form {
     display: flex;
     justify-content: space-evenly;
     max-width: 50rem;
     width: 90%;
     margin: 1rem auto; }
-    #main-index section.datos-entrada form div label {
+    #main-pavimentos section.datos-entrada form div label {
       display: block;
       margin: 1rem 0.2rem 0;
       color: #444545; }
-    #main-index section.datos-entrada form div input {
+    #main-pavimentos section.datos-entrada form div input {
       max-width: 10rem;
       width: 50%;
       padding: 1rem;
       margin: 0.5rem 0;
       border: 1px solid #444545;
       border-radius: 0.4rem; }
-    #main-index section.datos-entrada form div select {
+    #main-pavimentos section.datos-entrada form div select {
       max-width: 10rem;
       min-width: 5rem;
       width: 70%;
@@ -93,27 +105,30 @@ nav.navbar {
       margin: 0.5rem 0;
       border: 1px solid #444545;
       border-radius: 0.4rem; }
-  #main-index section.datos-entrada button {
-    display: block;
-    margin: 2rem auto;
-    background-color: #ceabb1;
-    color: #444545;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.4rem;
-    cursor: pointer; }
-    #main-index section.datos-entrada button:hover {
-      background-color: #b5ffe9; }
-  #main-index section.resultados .grid-container {
+  #main-pavimentos section.datos-entrada .botones {
+    display: flex;
+    justify-content: space-evenly; }
+    #main-pavimentos section.datos-entrada .botones button {
+      display: block;
+      margin: 2rem auto;
+      background-color: #ceabb1;
+      color: #444545;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer; }
+      #main-pavimentos section.datos-entrada .botones button:hover {
+        background-color: #b5ffe9; }
+  #main-pavimentos section.resultados .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1.5fr 2fr 2fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     justify-items: center;
-    max-width: 40rem;
+    max-width: 30rem;
     margin: 1rem auto; }
-    #main-index section.resultados .grid-container .titulo-result {
+    #main-pavimentos section.resultados .grid-container .titulo-result {
       font-weight: bold;
-      min-width: 5rem;
+      margin: 0 0.2rem;
       text-align: center; }
 
 #main-hidraulica {

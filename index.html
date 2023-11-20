@@ -18,147 +18,23 @@
 
   <body>
     <nav class="navbar">
-      <button type="button" class="navbar-boton">
-        <img src="./recursos/ico/hamburger32px.ico" alt="icono hamburguesa" />
-      </button>
-      <!-- <h1>Engiversity</h1> -->
       <ul class="navbar-lista">
-        <li><a href="./index.html">Pavimentos</a></li>
+        <li><a href="./index.html"><h1>Engiversity</h1></a></li>
+        <li><a href="./secciones/pavimentos.html">Pavimentos</a></li>
         <li><a href="./secciones/suelos.html">Suelos</a></li>
         <li><a href="./secciones/hidraulica.html">Hidráulica</a></li>
-        <li><a href="#">Estructuras</a></li>
       </ul>
     </nav>
     <main id="main-index">
-      <section class="espesores-constructivos">
-        <h1>Diseño de pavimento asfáltico utilizando el Método AASHTO-93</h1>
-        <h2>Espesores constructivos de las capas del pavimento</h2>
-        <ul>
-          <li>
-            Para la capa asfáltica (capa 1) los espesores en centímetros pueden
-            ser: 5, 7.5, 10, 12.5, 13, 14, 15, 16, 17, 18, 19, 20.
-          </li>
-          <li>
-            Para la base granular (capa 2) los espesores en centímetros pueden
-            ser: 15, 20, 25, 30.
-          </li>
-          <li>
-            Para la subbase granular (capa 3) los espesores en centímetros
-            pueden ser: 15, 20, 25, 30, 35, 40, 45, 50, 55, 60.
-          </li>
-        </ul>
-        <img
-          src="./recursos/img/pavimento-aashto.png"
-          alt="esquema de pavimento"
-        />
-        <p>
-          La guía completa del método AASHTO-93 se encuentra
-          <a
-            target="_blank"
-            href="https://drive.google.com/file/d/1VH4g-RPlbb6BOuhowi4yz0bk4UuHhd0O/view?usp=sharing"
-            >aquí</a
-          >.
-        </p>
-      </section>
-      <section class="datos-entrada">
-        <h2>Datos de entrada</h2>
-        <form>
-          <div>
-            <label for="nese">N en millones:</label>
-            <input
-              type="number"
-              id="nese"
-              min="0.01"
-              max="100"
-              step="0.01"
-              placeholder="Ej: 4.5"
-              required
-            />
-            <label for="R">Confiabilidad (%):</label>
-            <select name="confiabilidad" id="R" required>
-              <option value="50">50</option>
-              <option value="60">60</option>
-              <option value="70">70</option>
-              <option value="75">75</option>
-              <option value="80">80</option>
-              <option value="85">85</option>
-              <option value="90">90</option>
-              <option value="95">95</option>
-              <option value="98">98</option>
-              <option value="99">99</option>
-              <option value="99.9">99.9</option>
-              <option value="99.99">99.99</option>
-            </select>
-            <label for="tipoCarretera">Tipo de carretera:</label>
-            <select name="tipoCarretera" id="tipoCarretera" required>
-              <option value="grande">Grande</option>
-              <option value="pequena">Pequeña</option>
-            </select>
-            <label for="m">Coeficiente de drenaje:</label>
-            <input
-              type="number"
-              min="0.40"
-              max="1.40"
-              step="0.05"
-              id="m"
-              placeholder="Ej: 0.9"
-              required
-            />
-          </div>
-          <div>
-            <label for="modulo1">Módulo de capa asfáltica (MPa):</label>
-            <input
-              type="number"
-              id="modulo1"
-              min="1000"
-              max="10000"
-              step="50"
-              placeholder="Ej: 4000"
-              required
-            />
-            <label for="modulo2">Módulo de base granular (MPa):</label>
-            <input
-              type="number"
-              id="modulo2"
-              min="100"
-              max="600"
-              step="5"
-              placeholder="Ej: 300"
-              required
-            />
-            <label for="modulo3">Módulo de subbase granular (MPa):</label>
-            <input
-              type="number"
-              id="modulo3"
-              min="100"
-              max="600"
-              step="5"
-              placeholder="Ej: 150"
-              required
-            />
-            <label for="modulo4">Módulo de subrasante (MPa):</label>
-            <input
-              type="number"
-              id="modulo4"
-              min="10"
-              max="100"
-              step="1"
-              placeholder="Ej: 40"
-              required
-            />
-          </div>
-        </form>
-        <button type="button" id="boton-calcular">Calcular</button>
-      </section>
-      <section class="resultados">
-        <h2>Resultados</h2>
-        <!-- <p>Aquí se visualizan los resultados de cada capa.</p> -->
-        <div class="grid-container"></div>
-      </section>
+      <section>
+      <h1>Bienvenido a la aplicación web Engiversity</h1>
+      <p>
+        Este proyecto de desarrollo tecnológico del profesor Gerardo Andrés Dorado Jurado (<a href="https://scienti.minciencias.gov.co/cvlac/visualizador/generarCurriculoCv.do?cod_rh=0001656074" target="_blank">ver hoja de vida</a>) propone la creación de una aplicación web para facilitar los procedimientos de cálculo y diseño utilizados en las áreas de la ingeniería civil, como son los pavimentos, estructuras, geotecnia e hidráulica. La aplicación se desarrolla utilizando HTML, CSS y JavaScript con una interfaz gráfica de fácil uso y visualización de resultados. El objetivo es proporcionar a estudiantes e ingenieros consultores una herramienta para analizar procedimientos y resultados recurrentes en la disciplina. Se pretente indagar sobre los procedimientos y métodos de diseño para seleccionar los más representativos de cada área de la ingeniería civil. Estos se integran en una aplicación web didáctica para apoyar tanto el trabajo del profesional como la enseñanza de la ingeniería. El proyecto busca satisfacer una necesidad en la industria y la academia de ingeniería civil.
+      </p>
+    </section>
     </main>
     <footer>
       <!-- pendiente footer -->
     </footer>
-    <script src="./js/main.js"></script>
   </body>
 </html>

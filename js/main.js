@@ -1,4 +1,4 @@
-// Clases
+// CLASES
 class CapaPavimento {
   constructor(moduloMpa, m = 1) {
     this.moduloPsi = moduloMpa * 145; // Módulo de elasticidad de la capa en MPa y lo convierte a psi
@@ -70,105 +70,131 @@ class CapaPavimento {
   }
 }
 
-// Funciones
+// FUNCIONES
+
+function leerDatosEntrada() {
+  // Leer datos de entrada solicitados al usuario---------------------------------------------
+  const nese = parseFloat(document.getElementById("nese").value) * 1e6;
+  const confiabilidad = parseFloat(document.getElementById("R").value); // Confiabilidad del cálculo (r)
+  const carreteraGrande =
+    document.getElementById("tipoCarretera").value === "grande"; // ¿Es carretera grande o pequeña?
+  // Módulos de las capas del pavimento
+  const moduloCapa1 = parseFloat(document.getElementById("modulo1").value); //MPa
+  const moduloCapa2 = parseFloat(document.getElementById("modulo2").value); //MPa
+  const moduloCapa3 = parseFloat(document.getElementById("modulo3").value); //MPa
+  const moduloCapa4 = parseFloat(document.getElementById("modulo4").value); //MPa
+  // Coeficiente de drenaje para capas 2 y 3
+  const m = parseFloat(document.getElementById("m").value);
+
+  // Constantes del método------------------------------------------------------------
+  // Obtener zr según la confiabilidad r
+  const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr;
+
+  return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande, confiabilidad];
+}
+
+function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande) {
+  // Crear capas-------------------------------------------------------------------------
+  const capas = [
+    new CapaPavimento(moduloCapa1),
+    new CapaPavimento(moduloCapa2, m),
+    new CapaPavimento(moduloCapa3, m)
+  ]
+  // Resolver capas----------------------------------------------------------------------
+  capas[0].resolverCapa(nese, zr, carreteraGrande, 1, moduloCapa2);
+  capas[1].resolverCapa(nese, zr, carreteraGrande, 2, moduloCapa3, capas[0].SNcorregido);
+  capas[2].resolverCapa(nese, zr, carreteraGrande, 3, moduloCapa4, capas[1].SNcorregido);
+
+  return capas;
+}
+
+function renderizarResultados(capas) {
+  const contenedorResultados = document.querySelector(".grid-container");
+  contenedorResultados.innerHTML = "";
+  // Colocar divs con títulos----------------------------------------------------------------------
+  const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"];
+  for (const titulo of titulos) {
+    const divTitulo = document.createElement("div");
+    divTitulo.className = "grid-item titulo-result";
+    divTitulo.innerText = titulo;
+    contenedorResultados.append(divTitulo);
+  }
+
+  // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
+  const mensajeError = "Error";
+  for (const capa of capas) {
+    // Div con el número de la capa--------------------
+    const divCapa = document.createElement("div");
+    divCapa.className = "grid-item";
+    divCapa.innerText = capas.indexOf(capa) + 1;
+    contenedorResultados.append(divCapa);
+
+    // Div con el SNe de la capa------------------------
+    const divSNe = document.createElement("div");
+    divSNe.className = "grid-item";
+    divSNe.innerText = (capa.SNe || mensajeError);
+    contenedorResultados.append(divSNe);
+
+    // Div con el espesor de la capa--------------------
+    const divEspesor = document.createElement("div");
+    divEspesor.className = "grid-item";
+    divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
+    contenedorResultados.append(divEspesor);
+
+    // Div con el SNcorregido de la capa----------------
+    const divSNcorregido = document.createElement("div");
+    divSNcorregido.className = "grid-item";
+    divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
+    contenedorResultados.append(divSNcorregido);
+  }
+}
+
+function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande, confiabilidad) {
+  // Guardar en storage los datos de entrada y los resultados
+  const datosEntrada = {
+    nese: nese,
+    confiabilidad: confiabilidad,
+    carreteraGrande: carreteraGrande,
+    m: m,
+    moduloCapa1: moduloCapa1,
+    moduloCapa2: moduloCapa2,
+    moduloCapa3: moduloCapa3,
+    moduloCapa4: moduloCapa4
+  }
+  localStorage.setItem("datosEntrada", JSON.stringify(datosEntrada));
+}
+
 function inicializarBotonCalcular() {
   const boton = document.getElementById("boton-calcular");
   boton.addEventListener("click", () => {
-    // Datos de entrada solicitados al usuario---------------------------------------------
-    const nese = parseFloat(document.getElementById("nese").value) * 1e6;
-    // const n = tpd <= 5000 ? 10 : 15; // Periodo de diseño de 10 años con TPD menor o igual a 5000, o 15 años en caso contrario
-    // const n = parseFloat(document.getElementById("n").value);
-    const confiabilidad = parseFloat(document.getElementById("R").value); // Confiabilidad del cálculo (r)
-    const carreteraGrande =
-      document.getElementById("tipoCarretera").value === "grande"; // ¿Es carretera grande o pequeña?
-    // Módulos de las capas del pavimento
-    const moduloCapa1 = parseFloat(document.getElementById("modulo1").value); //MPa
-    const moduloCapa2 = parseFloat(document.getElementById("modulo2").value); //MPa
-    const moduloCapa3 = parseFloat(document.getElementById("modulo3").value); //MPa
-    const moduloCapa4 = parseFloat(document.getElementById("modulo4").value); //MPa
-    // Coeficiente de drenaje para capas 2 y 3
-    const m = parseFloat(document.getElementById("m").value);
+    // Lee los datos de entrada con la función y los guarda en un array
+    const datosEntradaLeidos = leerDatosEntrada();
+    // Obtiene las capas resueltas a partir de los datos leídos y las guarda en un array
+    const capas = crearYresolverCapas(...datosEntradaLeidos);
+    // el operador ... (spread) entrega los datos por separado del array de datos leídos
+    renderizarResultados(capas);
+    guardarResultadosEnStorage(...datosEntradaLeidos);
 
-    // Constantes del método------------------------------------------------------------
-    // const fd = 0.5; // Factor direccional
-    // const fca = 1.0; // Factor carril (por ahora fijo)
-    // const pvp = 31 / 100; // Porcentaje de vehículos pesados (por ahora fijo)
-    // const fc = 4.53; // Factor camión (por ahora fijo)
-
-    // Obtener zr según la confiabilidad r
-    const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr;
-
-    // Cálculos del método-----------------------------------------------------------------
-    // Número de ejes simples equivalentes (redondeado a múltiplos de 10000)
-    // const nese =
-    //   Math.round(
-    //     (((tpd * pvp * 365 * fd * fca * (-1 + (1 + r) ** n)) / r) * fc) / 1e4
-    //   ) * 1e4;
-
-    // Resultados-----------------------------------------------------------------------
-    const capas = [
-      new CapaPavimento(moduloCapa1),
-      new CapaPavimento(moduloCapa2, m),
-      new CapaPavimento(moduloCapa3, m)
-    ]
-
-    capas[0].resolverCapa(nese, zr, carreteraGrande, 1, moduloCapa2);
-    capas[1].resolverCapa(nese, zr, carreteraGrande, 2, moduloCapa3, capas[0].SNcorregido);
-    capas[2].resolverCapa(nese, zr, carreteraGrande, 3, moduloCapa4, capas[1].SNcorregido);
-
-    const contenedorResultados = document.querySelector(".grid-container");
-    contenedorResultados.innerHTML = "";
-    // Divs con títulos----------------------------------------------------------------------
-    const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"];
-    for (const titulo of titulos) {
-      const divTitulo = document.createElement("div");
-      divTitulo.className = "grid-item titulo-result";
-      divTitulo.innerText = titulo;
-      contenedorResultados.append(divTitulo);
-    }
-
-    // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
-    const mensajeError = "Error";
-    for (const capa of capas) {
-      // Div con el número de la capa--------------------
-      const divCapa = document.createElement("div");
-      divCapa.className = "grid-item";
-      divCapa.innerText = capas.indexOf(capa) + 1;
-      contenedorResultados.append(divCapa);
-
-      // Div con el SNe de la capa------------------------
-      const divSNe = document.createElement("div");
-      divSNe.className = "grid-item";
-      divSNe.innerText = (capa.SNe || mensajeError);
-      contenedorResultados.append(divSNe);
-
-      // Div con el espesor de la capa--------------------
-      const divEspesor = document.createElement("div");
-      divEspesor.className = "grid-item";
-      divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
-      contenedorResultados.append(divEspesor);
-
-      // Div con el SNcorregido de la capa----------------
-      const divSNcorregido = document.createElement("div");
-      divSNcorregido.className = "grid-item";
-      divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
-      contenedorResultados.append(divSNcorregido);
-    }
-
-    // document.getElementById("resultado").innerText = `Primera capa: SNe: ${capa1.SNe} - Espesor ${capa1.dCorregidoCm} cm - SNcorregido: ${capa1.SNcorregido}\nSegunda capa: SNe: ${capa2.SNe} - Espesor ${capa2.dCorregidoCm} cm - SNcorregido: ${capa2.SNcorregido}\nTercera capa: SNe: ${capa3.SNe} - Espesor ${capa3.dCorregidoCm} cm - SNcorregido: ${capa3.SNcorregido}`;
   });
 }
 
-function inicializarBotonHamburguesa() {
-  const boton = document.getElementById("boton-hamburguesa");
-  boton.addEventListener("click", () => {
-    const navbar = document.getElementById("navbar");
-    navbar.className = "abierto";
-  })
+function inicializarBotonRecuperar() {
+  const botonRecuperar = document.getElementById("boton-recuperar");
+  botonRecuperar.addEventListener("click", () => {
+    const datosEntrada = JSON.parse(localStorage.getItem("datosEntrada"));
+    document.getElementById("nese").value = datosEntrada.nese / 1e6 || "";
+    document.getElementById("R").value = datosEntrada.confiabilidad || "";
+    document.getElementById("tipoCarretera").value = datosEntrada.carreteraGrande ? "grande" : "pequena" || "";
+    document.getElementById("m").value = datosEntrada.m || "";
+    document.getElementById("modulo1").value = datosEntrada.moduloCapa1 || "";
+    document.getElementById("modulo2").value = datosEntrada.moduloCapa2 || "";
+    document.getElementById("modulo3").value = datosEntrada.moduloCapa3 || "";
+    document.getElementById("modulo4").value = datosEntrada.moduloCapa4 || "";
 
+  });
 }
 
-// Inicio del programa
+// INICIO DEL PROGRAMA------------------------------------
 const desvNormalEstandar = [
   { r: 50.0, zr: 0.0 },
   { r: 60.0, zr: 0.253 },
@@ -189,4 +215,4 @@ const espesoresConstructivosCapas = [
   [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
 ];
 inicializarBotonCalcular();
-inicializarBotonHamburguesa();
+inicializarBotonRecuperar();

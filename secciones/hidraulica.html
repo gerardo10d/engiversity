@@ -1,98 +1,128 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style.css" />
-    <link rel="shortcut icon" href="../recursos/img/logo50px.png" />
-    <title>Hidráulica</title>
-  </head>
-  <body>
-    <header id="header">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="shortcut icon" href="../recursos/img/logo50px.png" />
+  <!-- Para ecuaciones -->
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  <!-- ----------------------------- -->
+  <title>Hidráulica</title>
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul class="navbar-lista">
+      <li><a href="../index.html"><h1>Engiversity</h1></a></li>
+      <li><a href="./pavimentos.html">Pavimentos</a></li>
+      <li><a href="./suelos.html">Suelos</a></li>
+      <li><a href="./hidraulica.html">Hidráulica</a></li>
+    </ul>
+  </nav>
+  <main id="main-hidraulica">
+    <section>
+      <h1>Práctica N.° 13 - Método sección-pendiente</h1>
+      <h2>Objetivo</h2>
+      <p>
+        Aprender un método de estimación del caudal máximo que drena por una
+        corriente natural, cuando los datos disponibles no son suficientes
+        para justificar el uso de técnicas más comunes.
+      </p>
+      <h2>Introducción - Marco Teórico</h2>
+      <p>
+        Cuando se va a aforar un cauce natural y no se dispone de datos que
+        permitan aplicar un método para el cálculo del caudal, el método
+        sección-pendiente (también conocido como método área-pendiente) suele
+        proporcionar resultados adecuados. A pesar de que el flujo libre en
+        canales suele ser de tipo no uniforme, en algunos casos es posible o
+        necesario analizar estos flujos con los conceptos de flujo uniforme,
+        por lo cual, se justifica el empleo del enfoque de este método cuando
+        los cambios en el factor de forma son menores al 30 %.
+      </p>
+      <p>
+        Para aplicar el método sección-pendiente se requiere la siguiente
+        información:
+      </p>
       <ul>
-        <li><a href="../index.html">Pavimentos</a></li>
-        <li><a href="../secciones/suelos.html">Suelos</a></li>
-        <li><a href="../secciones/hidraulica.html">Hidráulica</a></li>
-        <li><a href="#">Estructuras</a></li>
+        <li>
+          Un tramo de canal lo suficientemente largo, donde no existan
+          afluentes ni efluentes.
+        </li>
+        <li>
+          El cambio de elevación del agua a través del tramo (pendiente
+          longitudinal del agua).
+        </li>
+        <li>Estimación del coeficiente de rugosidad del tramo.</li>
       </ul>
-    </header>
-    <main id="main-hidraulica">
-      <section>
-        <h1>Práctica N.° 13 - Método sección-pendiente</h1>
-        <h2>Objetivo</h2>
-        <p>
-          Aprender un método de estimación del caudal máximo que drena por una
-          corriente natural, cuando los datos disponibles no son suficientes
-          para justificar el uso de técnicas más comunes.
-        </p>
-        <h2>Introducción - Marco Teórico</h2>
-        <p>
-          Cuando se va a aforar un cauce natural y no se dispone de datos que
-          permitan aplicar un método para el cálculo del caudal, el método
-          sección-pendiente (también conocido como método área-pendiente) suele
-          proporcionar resultados adecuados. A pesar de que el flujo libre en
-          canales suele ser de tipo no uniforme, en algunos casos es posible o
-          necesario analizar estos flujos con los conceptos de flujo uniforme,
-          por lo cual, se justifica el empleo del enfoque de este método cuando
-          los cambios en el factor de forma son menores al 30 %.
-        </p>
-        <p>
-          Para aplicar el método sección-pendiente se requiere la siguiente
-          información:
-        </p>
-        <ul>
-          <li>
-            Un tramo de canal lo suficientemente largo, donde no existan
-            afluentes ni efluentes.
-          </li>
-          <li>
-            El cambio de elevación del agua a través del tramo (pendiente
-            longitudinal del agua).
-          </li>
-          <li>Estimación del coeficiente de rugosidad del tramo.</li>
-        </ul>
-        <p>
-          La longitud del tramo debe cumplir con los siguientes lineamientos:
-        </p>
-        <ul>
-          <li>
-            La longitud debe ser por lo menos de 75 veces el tirante medio de la
-            primera sección transversal localizada.
-          </li>
-          <li>
-            La caída de la superficie del agua debe ser igual o mayor que la
-            carga de velocidad dos.
-          </li>
-        </ul>
-        <h2>Equipo</h2>
-        <ul>
-          <li>Cinta métrica o regla.</li>
-          <li>Cronómetro.</li>
-        </ul>
-        <h2>Procedimiento</h2>
-        <ol>
-          <li>Realizar aforo volumétrico (si es posible).</li>
-          <li>
-            Escoger dos secciones transversales del canal y calcular para cada
-            una:
-            <ul>
-              <li>Tirante.</li>
-              <li>Área hidráulica.</li>
-              <li>Perímetro mojado.</li>
-              <li>Rugosidad.</li>
-            </ul>
-          </li>
-          <li>
-            Calcular la pendiente de la superficie del agua entre las dos
-            secciones transversales (F).
-          </li>
-          <li>
-            Calcular los coeficientes de conductividad (K) para cada sección:
-    
-          </li>
-        </ol>
-      </section>
-    </main>
-    <footer></footer>
-  </body>
+      <p>
+        La longitud del tramo debe cumplir con los siguientes lineamientos:
+      </p>
+      <ul>
+        <li>
+          La longitud debe ser por lo menos de 75 veces el tirante medio de la
+          primera sección transversal localizada.
+        </li>
+        <li>
+          La caída de la superficie del agua debe ser igual o mayor que la
+          carga de velocidad dos.
+        </li>
+      </ul>
+      <h2>Equipo</h2>
+      <ul>
+        <li>Cinta métrica o regla.</li>
+        <li>Cronómetro.</li>
+      </ul>
+      <h2>Procedimiento</h2>
+      <ol>
+        <li>Realizar aforo volumétrico (si es posible).</li>
+        <li>
+          Escoger dos secciones transversales del canal y calcular para cada
+          una:
+          <ul>
+            <li>Tirante.</li>
+            <li>Área hidráulica.</li>
+            <li>Perímetro mojado.</li>
+            <li>Rugosidad.</li>
+            <li>Distancia entre las dos secciones.</li>
+          </ul>
+        </li>
+        <li>
+          Calcular la caída de la superficie del agua entre las dos
+          secciones transversales (F).
+        </li>
+        <li>
+          Calcular los coeficientes de conductividad (K) para cada sección:
+          \[K_i = \frac{1}{\eta}\cdot A\cdot {R_h}^{2/3}\]
+        </li>
+        <li>Calcular el coeficiente de conductividad medio como la media geométrica:
+          \[K=\sqrt{K_1 \cdot K_2} \]
+        </li>
+        <li>Al asumir una cabeza de velocidad igual a cero, la pendiente de la línea de energía (\(S_f\)) se puede aproximar a la pendiente de la lámina de agua (\(S_w\)):
+          \[ S_f\approx S_w=\frac{F}{L} \]
+        </li>
+        <li>Entonces el caudal puede ser calculado a partir de la siguiente ecuación:
+          \[ Q=K \sqrt{S_f} \]
+          La cual arroja una primera aproximación del caudal.
+        </li>
+        <li>Las cabezas de velocidad en las secciones aguas arriba \( \left(\alpha_1{V_1}^2/2g\right) \) y aguas abajo \( \left(\alpha_2{V_2}^2/2g \right) \) son calculadas, por lo tanto, la pendiente de la línea de energía ahora será igual a:
+          \[ S_f=\frac{h_f}{L} \]
+          Donde:
+          \[ h_f=F + \lambda \left(\alpha_1\frac{{V_1}^2}{2g} - \alpha_2\frac{{V_2}^2}{2g} \right) \]
+          Siendo lambda (\(\lambda\)) un factor de corrección. Cuando el tramo se está contrayendo (\( V_1 < V_2\)),
+            \(\lambda=1\). Cuando el tramo se está expandiendo (\( V_1> V_2\)), \(\lambda=0.5\). El caudal
+            correspondiente se calcula mediante la ecuación del paso 7 empleando la pendiente ajustada mediante las ecuaciones del paso 8. Esto arroja las siguientes aproximaciones del caudal.
+        </li>
+        <li>El paso anterior se repite hasta que: \( Q_{i+1}\approx Q_i \)</li>
+        <li>Se considera apropiado promediar los caudales estimados para varios tramos.</li>
+        <li>Comparar con el paso 1 (si es posible).</li>
+      </ol>
+    </section>
+  </main>
+  <footer></footer>
+</body>
+
 </html>
