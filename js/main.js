@@ -194,6 +194,19 @@ function inicializarBotonRecuperar() {
   });
 }
 
+function obtenerEspesores() {
+
+  return new Promise((resolve, reject) => {
+
+    fetch('/espesoresCapas.json').then((response) => {
+      return response.json();
+    }).then((responseJson) => {
+      espesoresConstructivosCapas = responseJson;
+      resolve();
+    });
+  });
+
+}
 // INICIO DEL PROGRAMA------------------------------------
 const desvNormalEstandar = [
   { r: 50.0, zr: 0.0 },
@@ -209,10 +222,13 @@ const desvNormalEstandar = [
   { r: 99.9, zr: 3.09 },
   { r: 99.99, zr: 3.75 },
 ];
-const espesoresConstructivosCapas = [
-  [5, 7.5, 10, 12.5, 13, 14, 15, 16, 17, 18, 19, 20],
-  [15, 20, 25, 30],
-  [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-];
-inicializarBotonCalcular();
+let espesoresConstructivosCapas = [];
+// const espesoresConstructivosCapas = [
+//   [5, 7.5, 10, 12.5, 13, 14, 15, 16, 17, 18, 19, 20],
+//   [15, 20, 25, 30],
+//   [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
+// ];
+obtenerEspesores().then(() =>{
+  inicializarBotonCalcular();
+})
 inicializarBotonRecuperar();
