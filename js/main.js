@@ -210,7 +210,7 @@ function obtenerEspesores() {
 
   return new Promise((resolve, reject) => {
 
-    fetch('/espesoresCapas.json').then((response) => {
+    fetch('../espesoresCapas.json').then((response) => {
       return response.json();
     }).then((responseJson) => {
       espesoresConstructivosCapas = responseJson;
