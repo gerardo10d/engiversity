@@ -4,20 +4,25 @@ nav.navbar {
     flex-direction: column;
     align-items: center;
     list-style: none;
-    background-color: $color1;
+    background-color: $color-gris_oscuro;
     li {
       h1 {
-        color: $color2;
+        color: $color-gris_claro;
+        transition: color 0.2s ease;
+        &:hover {
+          color: $color-blanco_ahumado;
+        }
       }
       margin: 0.1rem 1rem;
       a {
         text-decoration: none;
-        color: $color2;
+        color: $color-blanco_ahumado;
+        transition: color 0.2s ease;
         &:visited {
-          color: $color3;
+          color: $color-blanco_ahumado;
         }
         &:hover {
-          color: $color5;
+          color: $color-gris_claro;
         }
       }
     }

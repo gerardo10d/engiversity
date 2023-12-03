@@ -174,7 +174,19 @@ function inicializarBotonCalcular() {
     // el operador ... (spread) entrega los datos por separado del array de datos leídos
     renderizarResultados(capas);
     guardarResultadosEnStorage(...datosEntradaLeidos);
-
+    Toastify({
+      text: "Cálculo correctamente realizado y guardado",
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: "#4CAF50",
+      },
+      onClick: function(){} // Callback after click
+    }).showToast();
   });
 }
 
@@ -223,11 +235,6 @@ const desvNormalEstandar = [
   { r: 99.99, zr: 3.75 },
 ];
 let espesoresConstructivosCapas = [];
-// const espesoresConstructivosCapas = [
-//   [5, 7.5, 10, 12.5, 13, 14, 15, 16, 17, 18, 19, 20],
-//   [15, 20, 25, 30],
-//   [15, 20, 25, 30, 35, 40, 45, 50, 55, 60],
-// ];
 obtenerEspesores().then(() =>{
   inicializarBotonCalcular();
 })

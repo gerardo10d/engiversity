@@ -1,6 +1,7 @@
 #main-index {
   margin: 0 auto;
   padding: 1.25rem;
+  flex: 1;
 
   // Para todas las secciones
   section {
@@ -15,12 +16,12 @@
       text-align: start;
       a {
         text-decoration: none;
-        color: $color2;
+        color: $color-azul_oscuro;
         &:visited {
-          color: $color1;
+          color: $color-azul_claro;
         }
         &:hover {
-          color: $color5;
+          color: $color-azul_claro;
         }
       }
     }

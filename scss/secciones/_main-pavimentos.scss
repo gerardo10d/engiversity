@@ -29,12 +29,12 @@
       text-align: center;
       a {
         text-decoration: none;
-        color: $color2;
+        color: $color-azul_oscuro;
         &:visited {
-          color: $color1;
+          color: $color-azul_claro;
         }
         &:hover {
-          color: $color5;
+          color: $color-azul_claro;
         }
       }
     }
@@ -51,14 +51,14 @@
         label {
           display: block;
           margin: 1rem 0.2rem 0;
-          color: $color1;
+          color: $color-gris_oscuro;
         }
         input {
           max-width: 10rem;
           width: 50%;
           padding: 1rem;
           margin: 0.5rem 0;
-          border: 1px solid $color1;
+          border: 1px solid $color-gris_oscuro;
           border-radius: 0.4rem;
         }
         select {
@@ -67,7 +67,7 @@
           width: 70%;
           padding: 1rem;
           margin: 0.5rem 0;
-          border: 1px solid $color1;
+          border: 1px solid $color-gris_oscuro;
           border-radius: 0.4rem;
         }
       }
@@ -78,14 +78,15 @@
       button {
         display: block;
         margin: 2rem auto;
-        background-color: $color5;
-        color: $color1;
+        background-color: $color-gris_oscuro;
+        color: $color-blanco_ahumado;
         padding: 0.5rem 1rem;
         border: none;
         border-radius: 0.4rem;
         cursor: pointer;
+        transition: background-color 0.4s ease;
         &:hover {
-          background-color: $color2;
+          background-color: $color-gris_claro;
         }
       }
     }
