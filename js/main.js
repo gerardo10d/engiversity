@@ -175,8 +175,8 @@ function inicializarBotonCalcular() {
     renderizarResultados(capas);
     guardarResultadosEnStorage(...datosEntradaLeidos);
     Toastify({
-      text: "Cálculo correctamente realizado y guardado",
-      duration: 3000,
+      text: "Cálculo realizado y guardado",
+      duration: 1500,
       newWindow: true,
       close: true,
       gravity: "top", // `top` or `bottom`

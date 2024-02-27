@@ -10,15 +10,60 @@
   <body>
     <nav class="navbar">
       <ul class="navbar-lista">
-        <li><a href="../index.html"><h1>Engiversity</h1></a></li>
+        <li>
+          <a href="../index.html"><h1>Engiversity</h1></a>
+        </li>
         <li><a href="./pavimentos.html">Pavimentos</a></li>
         <li><a href="./suelos.html">Suelos</a></li>
         <li><a href="./hidraulica.html">Hidráulica</a></li>
       </ul>
     </nav>
-    <main>Próximamente clasificación de suelos...</main>
+    <main id="main-suelos">
+      Próximamente clasificación de suelos...
+      <section class="granulometria">
+        <form>
+          <label for="3in">75 mm (3"):</label>
+          <input type="number" id="3in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="2in">50 mm (2"):</label>
+          <input type="number" id="2in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="1.5in">37.5 mm (1.5"):</label>
+          <input type="number" id="1.5in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="1in">25 mm (1"):</label>
+          <input type="number" id="1in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="3/4in">19 mm (3/4"):</label>
+          <input type="number" id="3/4in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="3/8in">9.5 mm (3/8"):</label>
+          <input type="number" id="3/8in" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#4">4.75 mm (#4"):</label>
+          <input type="number" id="#4" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#10">2.0 mm (#10"):</label>
+          <input type="number" id="#10" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#20">0.850 mm (#20"):</label>
+          <input type="number" id="#20" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#40">0.425 mm (#40"):</label>
+          <input type="number" id="#40" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#60">0.250 mm (#60"):</label>
+          <input type="number" id="#60" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#140">0.106 mm (#140"):</label>
+          <input type="number" id="#140" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="#200">0.075 mm (#200"):</label>
+          <input type="number" id="#200" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="fondo">Fondo:</label>
+          <input type="number" id="fondo" class="pesos-granulom" min="0.00" step="0.01" />
+          <label for="LL">LL:</label>
+          <input type="number" id="LL" min="0.00" step="0.01" />
+          <label for="LP">LP:</label>
+          <input type="number" id="LP" min="0.00" step="0.01" />
+        </form>
+        <div class="botones">
+          <button type="button" id="boton-calcular">Calcular</button>
+          <button type="button" id="boton-recuperar">Recuperar último</button>
+        </div>
+      </section>
+    </main>
     <footer>
       <p>Sitio web creado por Mag. Ing. Gerardo Andrés Dorado Jurado</p>
     </footer>
+    <script src="../js/suelos.js"></script>
   </body>
 </html>

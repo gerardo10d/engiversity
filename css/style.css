@@ -142,6 +142,63 @@ nav.navbar ul.navbar-lista {
       margin: 0 0.2rem;
       text-align: center; }
 
+#main-suelos {
+  margin: 0 auto;
+  padding: 1.25rem; }
+  #main-suelos section {
+    max-width: 50rem;
+    width: 98%;
+    margin: auto; }
+    #main-suelos section h1 {
+      text-align: center;
+      margin-bottom: 1rem; }
+    #main-suelos section h2 {
+      text-align: center;
+      margin: 1rem auto; }
+  #main-suelos section.granulometria form {
+    display: grid;
+    max-width: 50rem;
+    width: 90%;
+    margin: 1rem auto;
+    grid-template-columns: 5fr 4fr;
+    grid-template-rows: repeat(13, 1fr);
+    row-gap: 0.3rem;
+    align-items: center; }
+    #main-suelos section.granulometria form label {
+      color: #333333; }
+    #main-suelos section.granulometria form input {
+      min-width: 5rem;
+      width: 50%;
+      padding: 0.2rem;
+      border: 1px solid #333333;
+      border-radius: 0.4rem; }
+  #main-suelos section.granulometria .botones {
+    display: flex;
+    justify-content: space-evenly; }
+    #main-suelos section.granulometria .botones button {
+      display: block;
+      margin: 2rem auto;
+      background-color: #333333;
+      color: #f8f8f8;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: background-color 0.4s ease; }
+      #main-suelos section.granulometria .botones button:hover {
+        background-color: #999999; }
+  #main-suelos section.resultados .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 2fr 2fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+    max-width: 30rem;
+    margin: 1rem auto; }
+    #main-suelos section.resultados .grid-container .titulo-result {
+      font-weight: bold;
+      margin: 0 0.2rem;
+      text-align: center; }
+
 #main-hidraulica {
   margin: 0 auto;
   padding: 1.25rem; }
