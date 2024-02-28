@@ -21,38 +21,41 @@ function resolverGranulometria(pesosGtria, LL, LP) {
         retParcialAcum[i] = retParcial[i] + (retParcialAcum[i - 1] || 0);
         pasanteGtria.push(Math.round((100 - retParcialAcum[i]) * 100) / 100);
     }
-    const finos = pasanteGtria[12];
-    const arenas = pasanteGtria[6] - finos;
-    const gravas = 100 - arenas - finos;
+    const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
+    const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
+    const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
+    const finos = pasanteGtria[ubicacionMalla200];
+    const arenas = pasanteGtria[ubicacionMalla4] - finos;
+    const gravas = pasanteGtria[ubicacionMalla3in] - pasanteGtria[ubicacionMalla4];
     const IP = LL - LP;
     let clasificacionSuelo = null;
+    let simboloSuelo = null;
 
     if (finos >= 50) {
         if (LL < 50) {
-            if (IP >= 0.73 * (LL - 20)) {
-                if (IP > 7) {
-                    clasificacionSuelo = "CL";
-                } else if (IP >= 4 && IP <= 7) {
-                    clasificacionSuelo = "CL-ML";
-                } else {
-                    clasificacionSuelo = "ML";
-                }
-            } else {
-                clasificacionSuelo = "ML";
+            if (IP > 7 && IP >= 0.73 * (LL - 20)) {
+                clasificacionSuelo = "Arcilla fina"
+                simboloSuelo = "CL"
+            } else if (IP >= 4 && IP <= 7 && IP >= 0.73 * (LL - 20)) {
+                clasificacionSuelo = "Arcilla limosa"
+                simboloSuelo = "CL-ML"
+            } else if (IP < 4 || IP < 0.73 * (LL - 20)) {
+                clasificacionSuelo = "Limo"
+                simboloSuelo = "ML"
             }
         }
-    } else {
 
+        return [gravas, arenas, finos, IP];
     }
-
-    return [gravas, arenas, finos];
 }
 
 function inicializarBotonCalcular() {
     const boton = document.getElementById("boton-calcular");
     boton.addEventListener("click", () => {
         const datosEntradaLeidos = leerDatosEntrada();
+        console.log(datosEntradaLeidos)
         const resultados = resolverGranulometria(...datosEntradaLeidos);
+        console.log(resultados)
     });
 }
 
