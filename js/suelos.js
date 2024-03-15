@@ -153,6 +153,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 
             Cu = Math.round(D60 / D10 * 100) / 100
             Cc = Math.round((D30 ** 2) / (D60 * D10) * 100) / 100
+            console.log(Cu, Cc)
             return [Cu, Cc]
         }
 
@@ -207,6 +208,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
         } else { // arenas >= gravas
 
             if (finos < 5) {
+                const [Cu, Cc] = resolverCuCc()
                 if (Cu >= 6 && Cc <= 3 && Cc >= 1) {
                     clasificacionSuelo = "Arena bien graduada"
                     simboloSuelo = "SW"
@@ -215,6 +217,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
                     simboloSuelo = "SP"
                 }
             } else if (finos >= 5 && finos <= 12) {
+                const [Cu, Cc] = resolverCuCc()
                 if (Cu >= 6 && Cc <= 3 && Cc >= 1) {
                     clasificacionSuelo = "Arena bien graduada"
                     simboloSuelo = "SW"
@@ -256,7 +259,8 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 
 function renderizarResultados(resultados) {
     const contenedorResultado = document.querySelector(".contenedor-resultado");
-    const cadena = `Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
+    const cadena =
+        `%Gruesos: ${resultados[0]} | %Finos: ${resultados[1]} | %Gravas: ${resultados[2]} | %Arenas: ${resultados[3]} | IP: ${resultados[4]} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
     contenedorResultado.innerHTML = cadena;
 }
 
