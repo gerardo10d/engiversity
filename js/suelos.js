@@ -1,28 +1,50 @@
-// FUNCIONES
+// FUNCIONESpesosGtria
 
-function leerDatosEntrada() {
-    const pesosGranulometria = document.getElementsByClassName("pesos-granulom");
-    let pesosGtria = [];
-    for (let i = 0; i < pesosGranulometria.length; i++) {
-        pesosGtria.push(parseFloat(pesosGranulometria[i].value) || 0);
+function leerDatosEntrada(esConPesos) {
+    if (esConPesos) {
+        const pesosGranulometria = document.getElementsByClassName("pesos-granulom")
+        let pesosGtria = []
+        for (let i = 0; i < pesosGranulometria.length; i++) {
+            pesosGtria.push(parseFloat(pesosGranulometria[i].value) || 0)
+        }
+        const LL = parseFloat(document.getElementById("LL").value)
+        const LP = parseFloat(document.getElementById("LP").value)
+        return [pesosGtria, LL, LP]
+    } else {
+        const pasantesGranulometria = document.getElementsByClassName("pasante-granulom")
+        let pasantesGtria = []
+        let ultimoNoVacio = 100
+        for (let i = 0; i < pasantesGranulometria.length; i++) {
+            if (pasantesGranulometria[i].value) {
+                pasantesGtria.push(parseFloat(pasantesGranulometria[i].value))
+                ultimoNoVacio = parseFloat(pasantesGranulometria[i].value)
+            } else {
+                pasantesGtria.push(ultimoNoVacio)
+            }
+        }
+        const LL = parseFloat(document.getElementById("LL-p").value)
+        const LP = parseFloat(document.getElementById("LP-p").value)
+        return [pasantesGtria, LL, LP]
     }
-    const LL = parseFloat(document.getElementById("LL").value);
-    const LP = parseFloat(document.getElementById("LP").value);
-    return [pesosGtria, LL, LP];
 }
 
-function resolverGranulometria(pesosGtria, LL, LP) {
-    let resultados = []
-    const totalPesos = pesosGtria.reduce((acumulador, elemento) => acumulador + elemento, 0);
-    let retParcial = [];
-    let retParcialAcum = [];
+function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
     let pasanteGtria = [];
-    let aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
-    for (let i = 0; i < pesosGtria.length; i++) {
-        retParcial[i] = pesosGtria[i] / totalPesos * 100;
-        retParcialAcum[i] = retParcial[i] + (retParcialAcum[i - 1] || 0);
-        pasanteGtria.push(Math.round((100 - retParcialAcum[i]) * 100) / 100);
+    if (esConPesos) {
+        const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0);
+        let retParcial = [];
+        let retParcialAcum = [];
+        for (let i = 0; i < pesosOpasantesGtria.length; i++) {
+            retParcial[i] = pesosOpasantesGtria[i] / totalPesos * 100;
+            retParcialAcum[i] = retParcial[i] + (retParcialAcum[i - 1] || 0);
+            pasanteGtria.push(Math.round((100 - retParcialAcum[i]) * 100) / 100);
+        }
+    } else {
+        pasanteGtria = pesosOpasantesGtria.slice() //crear copia
     }
+
+    let resultados = []
+    const aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
     const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
     const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
     const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
@@ -33,6 +55,8 @@ function resolverGranulometria(pesosGtria, LL, LP) {
     const IP = LL - LP;
     let clasificacionSuelo = null;
     let simboloSuelo = null;
+    let Cu = null
+    let Cc = null
 
     function resolverSufijosYprefijos(clasificacionSuelo, simboloSuelo, gruesos, arenas, gravas) {
 
@@ -102,51 +126,55 @@ function resolverGranulometria(pesosGtria, LL, LP) {
 
 
     } else { // Suelos gruesos
-        const pasaInf60 = pasanteGtria.find((el) => el < 60)
-        const indexPasaInf60 = pasanteGtria.indexOf(pasaInf60)
-        const indexPasaSup60 = indexPasaInf60 - 1
-        const pasaSup60 = pasanteGtria[indexPasaSup60]
-        const Dsup60 = aberturaTamizmm[indexPasaSup60]
-        const Dinf60 = aberturaTamizmm[indexPasaInf60]
-        const D60 = Dinf60 * (Dsup60 / Dinf60) ** ((60 - pasaInf60) / (pasaSup60 - pasaInf60))
+        function resolverCuCc() {
+            const pasaInf60 = pasanteGtria.find((el) => el <= 60)
+            const indexPasaInf60 = pasanteGtria.indexOf(pasaInf60)
+            const indexPasaSup60 = indexPasaInf60 - 1
+            const pasaSup60 = pasanteGtria[indexPasaSup60]
+            const Dsup60 = aberturaTamizmm[indexPasaSup60]
+            const Dinf60 = aberturaTamizmm[indexPasaInf60]
+            const D60 = Dinf60 * (Dsup60 / Dinf60) ** ((60 - pasaInf60) / (pasaSup60 - pasaInf60))
 
-        const pasaInf30 = pasanteGtria.find((el) => el < 30)
-        const indexPasaInf30 = pasanteGtria.indexOf(pasaInf30)
-        const indexPasaSup30 = indexPasaInf30 - 1
-        const pasaSup30 = pasanteGtria[indexPasaSup30]
-        const Dsup30 = aberturaTamizmm[indexPasaSup30]
-        const Dinf30 = aberturaTamizmm[indexPasaInf30]
-        const D30 = Dinf30 * (Dsup30 / Dinf30) ** ((30 - pasaInf30) / (pasaSup30 - pasaInf30))
-        
-        const pasaInf10 = pasanteGtria.find((el) => el < 10)
-        const indexPasaInf10 = pasanteGtria.indexOf(pasaInf10)
-        const indexPasaSup10 = indexPasaInf10 - 1
-        const pasaSup10 = pasanteGtria[indexPasaSup10]
-        const Dsup10 = aberturaTamizmm[indexPasaSup10]
-        const Dinf10 = aberturaTamizmm[indexPasaInf10]
-        const D10 = Dinf10 * (Dsup10 / Dinf10) ** ((10 - pasaInf10) / (pasaSup10 - pasaInf10))
-        
-        const Cu = Math.round(D60 / D10 * 100) / 100
-        const Cc = Math.round( (D30 ** 2) / (D60 * D10) *100 ) / 100
-        console.log(D60, D30, D10)
-        
+            const pasaInf30 = pasanteGtria.find((el) => el <= 30)
+            const indexPasaInf30 = pasanteGtria.indexOf(pasaInf30)
+            const indexPasaSup30 = indexPasaInf30 - 1
+            const pasaSup30 = pasanteGtria[indexPasaSup30]
+            const Dsup30 = aberturaTamizmm[indexPasaSup30]
+            const Dinf30 = aberturaTamizmm[indexPasaInf30]
+            const D30 = Dinf30 * (Dsup30 / Dinf30) ** ((30 - pasaInf30) / (pasaSup30 - pasaInf30))
+
+            const pasaInf10 = pasanteGtria.find((el) => el <= 10)
+            const indexPasaInf10 = pasanteGtria.indexOf(pasaInf10)
+            const indexPasaSup10 = indexPasaInf10 - 1
+            const pasaSup10 = pasanteGtria[indexPasaSup10]
+            const Dsup10 = aberturaTamizmm[indexPasaSup10]
+            const Dinf10 = aberturaTamizmm[indexPasaInf10]
+            const D10 = Dinf10 * (Dsup10 / Dinf10) ** ((10 - pasaInf10) / (pasaSup10 - pasaInf10))
+
+            Cu = Math.round(D60 / D10 * 100) / 100
+            Cc = Math.round((D30 ** 2) / (D60 * D10) * 100) / 100
+            return [Cu, Cc]
+        }
+
         const [, simboloPorcionFina] = resolverFinos(clasificacionSuelo, simboloSuelo, LL, IP)
 
         if (gravas > arenas) {
             if (finos < 5) {
+                const [Cu, Cc] = resolverCuCc()
                 if (Cu >= 4 && Cc <= 3 && Cc >= 1) {
-                    clasificacionSuelo = "Grava bien gradada"
+                    clasificacionSuelo = "Grava bien graduada"
                     simboloSuelo = "GW"
                 } else {
-                    clasificacionSuelo = "Grava mal gradada"
+                    clasificacionSuelo = "Grava mal graduada"
                     simboloSuelo = "GP"
                 }
             } else if (finos >= 5 && finos <= 12) {
+                const [Cu, Cc] = resolverCuCc()
                 if (Cu >= 4 && Cc <= 3 && Cc >= 1) {
-                    clasificacionSuelo = "Grava bien gradada"
+                    clasificacionSuelo = "Grava bien graduada"
                     simboloSuelo = "GW"
                 } else {
-                    clasificacionSuelo = "Grava mal gradada"
+                    clasificacionSuelo = "Grava mal graduada"
                     simboloSuelo = "GP"
                 }
 
@@ -180,18 +208,18 @@ function resolverGranulometria(pesosGtria, LL, LP) {
 
             if (finos < 5) {
                 if (Cu >= 6 && Cc <= 3 && Cc >= 1) {
-                    clasificacionSuelo = "Arena bien gradada"
+                    clasificacionSuelo = "Arena bien graduada"
                     simboloSuelo = "SW"
                 } else {
-                    clasificacionSuelo = "Arena mal gradada"
+                    clasificacionSuelo = "Arena mal graduada"
                     simboloSuelo = "SP"
                 }
             } else if (finos >= 5 && finos <= 12) {
                 if (Cu >= 6 && Cc <= 3 && Cc >= 1) {
-                    clasificacionSuelo = "Arena bien gradada"
+                    clasificacionSuelo = "Arena bien graduada"
                     simboloSuelo = "SW"
                 } else {
-                    clasificacionSuelo = "Arena mal gradada"
+                    clasificacionSuelo = "Arena mal graduada"
                     simboloSuelo = "SP"
                 }
 
@@ -226,18 +254,27 @@ function resolverGranulometria(pesosGtria, LL, LP) {
     return [gruesos, finos, gravas, arenas, IP, ...resultados];
 }
 
-function inicializarBotonCalcular() {
-    const boton = document.getElementById("boton-calcular");
-    boton.addEventListener("click", () => {
-        // const datosEntradaLeidos = leerDatosEntrada();
-        // console.log(datosEntradaLeidos)
+function renderizarResultados(resultados) {
+    const contenedorResultado = document.querySelector(".contenedor-resultado");
+    const cadena = `Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
+    contenedorResultado.innerHTML = cadena;
+}
 
-        //                                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        const datosEntradaLeidos = [0, 0, 0, 0, 0, 0, 2, 0, 0, 6, 0, 40, 0, 0, 0, 26, 0, 0, 0, 0, 0, 16, 10]
-        // console.log(datosEntradaLeidos)
-        // const resultados = resolverGranulometria(...datosEntradaLeidos);
-        const resultados = resolverGranulometria(datosEntradaLeidos, 28, 22);
-        console.log(resultados)
+function inicializarBotonCalcular() {
+    const botonCalcularConMasas = document.getElementById("boton-calcular-masas")
+    const botonCalcularConPasantes = document.getElementById("boton-calcular-pasantes")
+    botonCalcularConMasas.addEventListener("click", () => {
+        const datosEntradaLeidos = leerDatosEntrada(true);
+        const resultados = resolverGranulometria(true, ...datosEntradaLeidos);
+        renderizarResultados(resultados)
+        // console.log(resultados)
+    });
+
+    botonCalcularConPasantes.addEventListener("click", () => {
+        const datosEntradaLeidos = leerDatosEntrada(false);
+        const resultados = resolverGranulometria(false, ...datosEntradaLeidos);
+        renderizarResultados(resultados)
+        // console.log(resultados)
     });
 }
 
