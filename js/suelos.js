@@ -90,7 +90,6 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
             }
         }
 
-        console.log("avanzó", clasificacionSuelo, simboloSuelo)
         return [clasificacionSuelo, simboloSuelo]
     }
     function resolverFinos(clasificacionSuelo, simboloSuelo, LL, IP) {
@@ -114,7 +113,6 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
                 simboloSuelo = "MH"
             }
         }
-        // console.log(clasificacionSuelo)
         return [clasificacionSuelo, simboloSuelo]
     }
 
@@ -153,7 +151,6 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 
             Cu = Math.round(D60 / D10 * 100) / 100
             Cc = Math.round((D30 ** 2) / (D60 * D10) * 100) / 100
-            console.log(Cu, Cc)
             return [Cu, Cc]
         }
 
@@ -271,14 +268,12 @@ function inicializarBotonCalcular() {
         const datosEntradaLeidos = leerDatosEntrada(true);
         const resultados = resolverGranulometria(true, ...datosEntradaLeidos);
         renderizarResultados(resultados)
-        // console.log(resultados)
     });
 
     botonCalcularConPasantes.addEventListener("click", () => {
         const datosEntradaLeidos = leerDatosEntrada(false);
         const resultados = resolverGranulometria(false, ...datosEntradaLeidos);
         renderizarResultados(resultados)
-        // console.log(resultados)
     });
 }
 
