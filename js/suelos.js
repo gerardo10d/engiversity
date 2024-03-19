@@ -1,4 +1,4 @@
-// FUNCIONESpesosGtria
+// FUNCIONES
 
 function leerDatosEntrada(esConPesos) {
     if (esConPesos) {
