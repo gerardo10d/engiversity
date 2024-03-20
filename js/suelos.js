@@ -257,7 +257,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 function renderizarResultados(resultados) {
     const contenedorResultado = document.querySelector(".contenedor-resultado");
     const cadena =
-        `%Gruesos: ${resultados[0]} | %Finos: ${resultados[1]} | %Gravas: ${resultados[2]} | %Arenas: ${resultados[3]} | IP: ${resultados[4]} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
+        `%Gruesos: ${Math.round(resultados[0] * 100) / 100} | %Finos: ${Math.round(resultados[1] * 100) / 100} | %Gravas: ${Math.round(resultados[2] * 100) / 100} | %Arenas: ${Math.round(resultados[3] * 100) / 100} | IP: ${Math.round(resultados[4] * 100) / 100} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
     contenedorResultado.innerHTML = cadena;
 }
 
