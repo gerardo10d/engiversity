@@ -1,16 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="author" content="Chart.js" />
-    <title>Histogram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="educación, ingenieria, tránsito, transporte"
+    />
+    <meta
+      name="description"
+      content="Cálculo de la velocidad de punto en ingeniería de tránsito"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="shortcut icon" href="../recursos/img/logo50px.png" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <title>Tránsito</title>
   </head>
 
   <body>
-    <div class="chartBox">
-      <canvas id="myChart"></canvas>
-    </div>
+    <nav class="navbar">
+      <ul class="navbar-lista">
+        <li>
+          <a href="../index.html">
+            <h1>Engiversity</h1>
+          </a>
+        </li>
+        <li><a href="./pavimentos.html">Pavimentos</a></li>
+        <li><a href="./suelos.html">Suelos</a></li>
+        <li><a href="./hidraulica.html">Hidráulica</a></li>
+        <li><a href="./transito.html">Tránsito</a></li>
+      </ul>
+    </nav>
+    <main id="main-transito">
+      <section class="velocidad-punto">
+        <h1>Velocidad de punto</h1>
+        <h3>Definición</h3>
+        <p>
+          Se trata de la velocidad que lleva un móvil en un instante
+          determinado. La mayor parte de los estudios de velocidad se refieren a
+          la velocidad de los vehículos en determinado punto o una sección
+          transversal de un camino o de una calle. El promedio de velocidad en
+          un tramo de camino será la media aritmética de las velocidades de
+          punto de todos los vehículos en dicho tramo.
+        </p>
+      </section>
+      
+      <section class="datos-entrada">
+        <input type="number" class="filas-velocidad" min="5" max="20" step="1" value="5">
+        <form >
+          <label>Velocidades (km/h)</label>
+          <label>Frecuencia observada</label>
+          <input type="number" class="velocidades" min="0" step="1" />
+          <input type="number" class="frecuencia-observada" min="0" step="1" />
+        </form>
+      </section>
+
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </main>
 
     <script src="../js/transito.js"></script>
   </body>

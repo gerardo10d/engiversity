@@ -1,3 +1,4 @@
+// FUNCIONES
 function crearTablaFrecuencias(datos, frecuencias) {
     const n = frecuencias.reduce((acum, elem) => acum + elem, 0)
     const min = Math.min(...velocidades)
@@ -43,7 +44,79 @@ function crearTablaFrecuencias(datos, frecuencias) {
     return tablaFrecuencias
 }
 
+function graficar(valoresX, valoresY, tipo, idElementoDom) {
+    const data = valoresX.map((k, i) => ({ x: k, y: valoresY[i] }));
+    const ctx = document.getElementById(idElementoDom).getContext("2d");
+    const myChart = new Chart(ctx, {
+        type: tipo,
+        data: {
+            datasets: [
+                {
+                    label: "Frecuencia Relativa",
+                    data: data,
+                    // backgroundColor: backgroundColor,
+                    // borderColor: ,
+                    borderWidth: 1,
+                    barPercentage: 1,
+                    categoryPercentage: 1,
+                    borderRadius: 5,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                x: {
+                    type: "linear",
+                    offset: false,
+                    grid: {
+                        offset: false,
+                    },
+                    ticks: {
+                        stepSize: 5,// aquí está el ancho de las barras
+                    },
+                    title: {
+                        display: true,
+                        text: "Velocidad",
+                        font: {
+                            size: 14,
+                        },
+                    },
+                },
+                y: {
+                    // beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Velocidad",
+                        font: {
+                            size: 14,
+                        },
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => {
+                            if (!items.length) {
+                                return "";
+                            }
+                            const item = items[0];
+                            const x = item.parsed.x;
+                            const min = x - 2.5; // Puede significar la mitad de la amplitud
+                            const max = x + 2.5; // Puede significar la mitad de la amplitud
+                            return `Velocidad: ${min} - ${max}`;
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
 
+// EJECUCIÓN DEL PROGRAMA
 const velocidades =
     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
 const frecuenciaObservada =
@@ -51,79 +124,8 @@ const frecuenciaObservada =
 
 const resultados = crearTablaFrecuencias(velocidades, frecuenciaObservada)
 
+graficar(resultados[2], resultados[4], "bar", "myChart")
+
 console.log(resultados)
 
-// const x_vals = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5];
-const x_vals = resultados[2];
-// const y_vals = [5, 8, 24, 16, 32, 42, 30, 17, 11];
-const y_vals = resultados[4];
-const data = x_vals.map((k, i) => ({ x: k, y: y_vals[i] }));
 
-const ctx = document.getElementById("myChart").getContext("2d");
-const myChart = new Chart(ctx, {
-    type: "bar",
-    data: {
-        datasets: [
-            {
-                label: "Frecuencia Relativa",
-                data: data,
-                // backgroundColor: backgroundColor,
-                // borderColor: ,
-                borderWidth: 1,
-                barPercentage: 1,
-                categoryPercentage: 1,
-                borderRadius: 5,
-            },
-        ],
-    },
-    options: {
-        scales: {
-            x: {
-                type: "linear",
-                offset: false,
-                grid: {
-                    offset: false,
-                },
-                ticks: {
-                    stepSize: 5,// aquí está el ancho de las barras
-                },
-                title: {
-                    display: true,
-                    text: "Velocidad",
-                    font: {
-                        size: 14,
-                    },
-                },
-            },
-            y: {
-                // beginAtZero: true,
-                title: {
-                    display: true,
-                    text: "Velocidad",
-                    font: {
-                        size: 14,
-                    },
-                },
-            },
-        },
-        plugins: {
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                callbacks: {
-                    title: (items) => {
-                        if (!items.length) {
-                            return "";
-                        }
-                        const item = items[0];
-                        const x = item.parsed.x;
-                        const min = x - 2.5; // Puede significar la mitad de la amplitud
-                        const max = x + 2.5; // Puede significar la mitad de la amplitud
-                        return `Velocidad: ${min} - ${max}`;
-                    },
-                },
-            },
-        },
-    },
-});

@@ -54,7 +54,8 @@ nav.navbar ul.navbar-lista {
       text-align: center;
       margin-bottom: 1rem; }
     #main-index section p {
-      text-align: start; }
+      text-align: start;
+      line-height: 1.5rem; }
       #main-index section p a {
         text-decoration: none;
         color: #005bb5; }
@@ -167,8 +168,8 @@ nav.navbar ul.navbar-lista {
     #main-suelos section.granulometria form label {
       color: #333333; }
     #main-suelos section.granulometria form input {
-      min-width: 5rem;
-      width: 50%;
+      min-width: 2rem;
+      max-width: 5rem;
       padding: 0.2rem;
       border: 1px solid #333333;
       border-radius: 0.4rem; }
@@ -214,6 +215,51 @@ nav.navbar ul.navbar-lista {
       margin: 1rem auto; }
     #main-hidraulica section p {
       margin: 1rem 0; }
+
+#main-transito {
+  margin: 0 auto;
+  padding: 1.25rem; }
+  #main-transito section {
+    max-width: 50rem;
+    width: 98%;
+    margin: auto; }
+    #main-transito section h1 {
+      text-align: center;
+      margin-bottom: 1rem; }
+    #main-transito section h3 {
+      text-align: center;
+      margin: 1rem auto; }
+  #main-transito section.datos-entrada form {
+    display: grid;
+    max-width: 50rem;
+    width: 90%;
+    margin: 1rem auto;
+    grid-template-columns: 5fr 6fr;
+    row-gap: 0.3rem;
+    align-items: center; }
+    #main-transito section.datos-entrada form label {
+      color: #333333; }
+    #main-transito section.datos-entrada form input {
+      min-width: 2rem;
+      max-width: 4rem;
+      padding: 0.2rem;
+      border: 1px solid #333333;
+      border-radius: 0.4rem; }
+  #main-transito section.datos-entrada .botones {
+    display: flex;
+    justify-content: space-evenly; }
+    #main-transito section.datos-entrada .botones button {
+      display: block;
+      margin: 2rem auto;
+      background-color: #333333;
+      color: #f8f8f8;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: background-color 0.4s ease; }
+      #main-transito section.datos-entrada .botones button:hover {
+        background-color: #999999; }
 
 footer {
   background-color: #333333;
