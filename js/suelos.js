@@ -253,11 +253,27 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 }
 
 function renderizarResultados(resultados) {
-    const contenedorResultado = document.querySelector(".contenedor-resultado");
+    const contenedorResultados = document.querySelector(".contenedor-resultados");
     const cadena =
         `%Gruesos: ${Math.round(resultados[0] * 100) / 100} | %Finos: ${Math.round(resultados[1] * 100) / 100} | %Gravas: ${Math.round(resultados[2] * 100) / 100} | %Arenas: ${Math.round(resultados[3] * 100) / 100} | IP: ${Math.round(resultados[4] * 100) / 100} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
-    contenedorResultado.innerHTML = cadena;
+    // contenedorResultado.innerHTML = cadena;
+
+    contenedorResultados.innerHTML = ""
+    // Colocar divs con títulos----------------------------------------------------------------------
+    const titulos = ["%Gruesos", "%Finos", "%Gravas", "%Arenas", "IP", "Clasificación", "Símbolo"]
+    
+    for (let i = 0; i<7; i++) {
+        const divTitulo = document.createElement("div")
+        divTitulo.className = "grid-item"
+        divTitulo.innerText = titulos[i]
+        contenedorResultados.append(divTitulo)
+        const spanResult = document.createElement("span")
+        spanResult.innerText = resultados[i]
+        contenedorResultados.append(spanResult)
+        
+    }
 }
+
 
 function inicializarBotonCalcular() {
     const botonCalcularConMasas = document.getElementById("boton-calcular-masas")

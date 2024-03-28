@@ -69,19 +69,13 @@
   }
 
   section.resultados {
-    .grid-container {
+    .contenedor-resultados {
       display: grid;
-      grid-template-columns: 1fr 1.5fr 2fr 2fr;
-      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(7, 1fr);
       justify-items: center;
       max-width: 30rem;
       margin: 1rem auto;
-      .titulo-result {
-        font-weight: bold;
-        margin: 0 0.2rem;
-        // min-width: 5rem;
-        text-align: center;
-      }
     }
   }
 }

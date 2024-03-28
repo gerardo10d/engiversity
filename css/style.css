@@ -193,17 +193,13 @@ nav.navbar ul.navbar-lista {
       transition: background-color 0.4s ease; }
       #main-suelos section.clasificacion .botones button:hover {
         background-color: #999999; }
-  #main-suelos section.resultados .grid-container {
+  #main-suelos section.resultados .contenedor-resultados {
     display: grid;
-    grid-template-columns: 1fr 1.5fr 2fr 2fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr);
     justify-items: center;
     max-width: 30rem;
     margin: 1rem auto; }
-    #main-suelos section.resultados .grid-container .titulo-result {
-      font-weight: bold;
-      margin: 0 0.2rem;
-      text-align: center; }
 
 #main-hidraulica {
   margin: 0 auto;
