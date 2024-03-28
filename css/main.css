@@ -1,0 +1,330 @@
+@charset "UTF-8";
+/* Tipografía local Cormorant-Garamond*/
+@import url("https://fonts.googleapis.com/css2?family=Proza+Libre:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@font-face {
+  font-family: "Cormorant-Garamond";
+  src: url("../recursos/fonts/CormorantGaramond-Regular.ttf");
+}
+/* Tipografía web  Proza Libre */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Proza Libre", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav.navbar ul.navbar-lista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  background-color: #333333;
+}
+nav.navbar ul.navbar-lista li {
+  margin: 0.1rem 1rem;
+}
+nav.navbar ul.navbar-lista li h1 {
+  color: #999999;
+  transition: color 0.2s ease;
+}
+nav.navbar ul.navbar-lista li h1:hover {
+  color: #f8f8f8;
+}
+nav.navbar ul.navbar-lista li a {
+  text-decoration: none;
+  color: #f8f8f8;
+  transition: color 0.2s ease;
+}
+nav.navbar ul.navbar-lista li a:visited {
+  color: #f8f8f8;
+}
+nav.navbar ul.navbar-lista li a:hover {
+  color: #999999;
+}
+@media (min-width: 30rem) {
+  nav.navbar ul.navbar-lista {
+    flex-direction: row;
+  }
+}
+
+#main-index {
+  margin: 0 auto;
+  padding: 1.25rem;
+  flex: 1;
+}
+#main-index section {
+  max-width: 50rem;
+  width: 98%;
+  margin: auto;
+}
+#main-index section h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+#main-index section p {
+  text-align: start;
+  line-height: 1.5rem;
+}
+#main-index section p a {
+  text-decoration: none;
+  color: #005bb5;
+}
+#main-index section p a:visited {
+  color: #007acc;
+}
+#main-index section p a:hover {
+  color: #007acc;
+}
+
+#main-pavimentos {
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+#main-pavimentos section {
+  max-width: 50rem;
+  width: 98%;
+  margin: auto;
+}
+#main-pavimentos section h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+#main-pavimentos section h2 {
+  text-align: center;
+  margin: 1rem auto;
+}
+#main-pavimentos section.espesores-constructivos img {
+  width: 90%;
+  max-width: 35rem;
+  display: block;
+  margin: 1rem auto;
+}
+#main-pavimentos section.espesores-constructivos p {
+  text-align: center;
+}
+#main-pavimentos section.espesores-constructivos p a {
+  text-decoration: none;
+  color: #005bb5;
+}
+#main-pavimentos section.espesores-constructivos p a:visited {
+  color: #007acc;
+}
+#main-pavimentos section.espesores-constructivos p a:hover {
+  color: #007acc;
+}
+#main-pavimentos section.datos-entrada form {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 50rem;
+  width: 90%;
+  margin: 1rem auto;
+}
+#main-pavimentos section.datos-entrada form div label {
+  display: block;
+  margin: 1rem 0.2rem 0;
+  color: #333333;
+}
+#main-pavimentos section.datos-entrada form div input {
+  max-width: 10rem;
+  width: 50%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #333333;
+  border-radius: 0.4rem;
+}
+#main-pavimentos section.datos-entrada form div select {
+  max-width: 10rem;
+  min-width: 5rem;
+  width: 70%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #333333;
+  border-radius: 0.4rem;
+}
+#main-pavimentos section.datos-entrada .botones {
+  display: flex;
+  justify-content: space-evenly;
+}
+#main-pavimentos section.datos-entrada .botones button {
+  display: block;
+  margin: 2rem auto;
+  background-color: #333333;
+  color: #f8f8f8;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+#main-pavimentos section.datos-entrada .botones button:hover {
+  background-color: #999999;
+}
+#main-pavimentos section.resultados .grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 2fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  max-width: 30rem;
+  margin: 1rem auto;
+}
+#main-pavimentos section.resultados .grid-container .titulo-result {
+  font-weight: bold;
+  margin: 0 0.2rem;
+  text-align: center;
+}
+
+#main-suelos {
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+#main-suelos section {
+  max-width: 50rem;
+  width: 98%;
+  margin: auto;
+}
+#main-suelos section h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+#main-suelos section h2 {
+  text-align: center;
+  margin: 1rem auto;
+}
+#main-suelos section.clasificacion form.granulometria {
+  display: grid;
+  margin: 1rem auto;
+  grid-template-columns: 4fr 5fr 5fr 5fr;
+  grid-template-rows: repeat(24, 1fr);
+  row-gap: 0.5rem;
+  align-items: center;
+  justify-items: center;
+}
+#main-suelos section.clasificacion label {
+  color: #333333;
+}
+#main-suelos section.clasificacion input {
+  min-width: 2rem;
+  max-width: 3rem;
+  padding: 0.2rem;
+  border: 1px solid #333333;
+  border-radius: 0.4rem;
+}
+#main-suelos section.clasificacion .botones {
+  display: flex;
+  justify-content: space-evenly;
+}
+#main-suelos section.clasificacion .botones button {
+  display: block;
+  margin: 2rem auto;
+  background-color: #333333;
+  color: #f8f8f8;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+#main-suelos section.clasificacion .botones button:hover {
+  background-color: #999999;
+}
+#main-suelos section.resultados .grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 2fr 2fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  max-width: 30rem;
+  margin: 1rem auto;
+}
+#main-suelos section.resultados .grid-container .titulo-result {
+  font-weight: bold;
+  margin: 0 0.2rem;
+  text-align: center;
+}
+
+#main-hidraulica {
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+#main-hidraulica section {
+  max-width: 50rem;
+  width: 92%;
+  margin: auto;
+}
+#main-hidraulica section h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+#main-hidraulica section h2 {
+  text-align: center;
+  margin: 1rem auto;
+}
+#main-hidraulica section p {
+  margin: 1rem 0;
+}
+
+#main-transito {
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+#main-transito section {
+  max-width: 50rem;
+  width: 98%;
+  margin: auto;
+}
+#main-transito section h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+#main-transito section h3 {
+  text-align: center;
+  margin: 1rem auto;
+}
+#main-transito section.datos-entrada form {
+  display: grid;
+  max-width: 50rem;
+  width: 90%;
+  margin: 1rem auto;
+  grid-template-columns: 5fr 6fr;
+  row-gap: 0.3rem;
+  align-items: center;
+}
+#main-transito section.datos-entrada form label {
+  color: #333333;
+}
+#main-transito section.datos-entrada form input {
+  min-width: 2rem;
+  max-width: 4rem;
+  padding: 0.2rem;
+  border: 1px solid #333333;
+  border-radius: 0.4rem;
+}
+#main-transito section.datos-entrada .botones {
+  display: flex;
+  justify-content: space-evenly;
+}
+#main-transito section.datos-entrada .botones button {
+  display: block;
+  margin: 2rem auto;
+  background-color: #333333;
+  color: #f8f8f8;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+#main-transito section.datos-entrada .botones button:hover {
+  background-color: #999999;
+}
+
+footer {
+  background-color: #333333;
+  color: #f8f8f8;
+  padding: 0.5rem 0;
+  text-align: center;
+}/*# sourceMappingURL=main.css.map */

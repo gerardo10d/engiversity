@@ -1,14 +1,14 @@
 // FUNCIONES
 
 function leerDatosEntrada(esConPesos) {
+    const LL = parseFloat(document.getElementById("LL").value)
+    const LP = parseFloat(document.getElementById("LP").value)
     if (esConPesos) {
         const pesosGranulometria = document.getElementsByClassName("pesos-granulom")
         let pesosGtria = []
         for (let i = 0; i < pesosGranulometria.length; i++) {
             pesosGtria.push(parseFloat(pesosGranulometria[i].value) || 0)
         }
-        const LL = parseFloat(document.getElementById("LL").value)
-        const LP = parseFloat(document.getElementById("LP").value)
         return [pesosGtria, LL, LP]
     } else {
         const pasantesGranulometria = document.getElementsByClassName("pasante-granulom")
@@ -22,8 +22,6 @@ function leerDatosEntrada(esConPesos) {
                 pasantesGtria.push(ultimoNoVacio)
             }
         }
-        const LL = parseFloat(document.getElementById("LL-p").value)
-        const LP = parseFloat(document.getElementById("LP-p").value)
         return [pasantesGtria, LL, LP]
     }
 }

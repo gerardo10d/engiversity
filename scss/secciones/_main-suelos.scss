@@ -18,27 +18,35 @@
   }
 
   // Para la primera sección
-  section.granulometria {
-    form {
+  section.clasificacion {
+
+    form.granulometria {
       display: grid;
-      max-width: 50rem;
-      width: 90%;
+      // width: 95%;
       margin: 1rem auto;
-      grid-template-columns: 5fr 6fr 4fr;
-      grid-template-rows: repeat(13, 1fr);
-      row-gap: 0.3rem;
+      grid-template-columns: 4fr 5fr 5fr 5fr;
+      grid-template-rows: repeat(24, 1fr);
+      row-gap: 0.5rem;
       align-items: center;
-      label {
-        color: $color-gris_oscuro;
-      }
-      input {
-        min-width: 2rem;
-        max-width: 5rem;
-        // width: 3rem;
-        padding: 0.2rem;
-        border: 1px solid $color-gris_oscuro;
-        border-radius: 0.4rem;
-      }
+      justify-items: center;
+    }
+    form.limites {
+      display: grid;
+      margin: 1rem auto;
+      grid-template-columns: 1fr 2fr 1fr 2fr;
+      align-items: center;
+      justify-items: center;
+    }
+    label {
+      color: $color-gris_oscuro;
+    }
+    input {
+      min-width: 2rem;
+      max-width: 4rem;
+      // width: 3rem;
+      padding: 0.2rem;
+      border: 1px solid $color-gris_oscuro;
+      border-radius: 0.3rem;
     }
     .botones {
       display: flex;
