@@ -183,7 +183,7 @@ nav.navbar ul.navbar-lista {
     justify-content: space-evenly; }
     #main-suelos section.clasificacion .botones button {
       display: block;
-      margin: 2rem auto;
+      margin: 2rem 0.1rem;
       background-color: #333333;
       color: #f8f8f8;
       padding: 0.5rem 1rem;
@@ -200,6 +200,17 @@ nav.navbar ul.navbar-lista {
     justify-items: center;
     max-width: 30rem;
     margin: 1rem auto; }
+  @media (max-width: 30rem) {
+    #main-suelos section.clasificacion form.granulometria {
+      display: grid;
+      margin: 1rem auto;
+      grid-template-columns: 4fr 5fr 5fr;
+      grid-template-rows: repeat(24, 1fr);
+      row-gap: 0.5rem;
+      align-items: center;
+      justify-items: center; }
+    #main-suelos section.clasificacion label.etiqueta-mm {
+      display: none; } }
 
 #main-hidraulica {
   margin: 0 auto;

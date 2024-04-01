@@ -19,7 +19,6 @@
 
   // Para la primera sección
   section.clasificacion {
-
     form.granulometria {
       display: grid;
       // width: 95%;
@@ -53,7 +52,7 @@
       justify-content: space-evenly;
       button {
         display: block;
-        margin: 2rem auto;
+        margin: 2rem 0.1rem;
         background-color: $color-gris_oscuro;
         color: $color-blanco_ahumado;
         padding: 0.5rem 1rem;
@@ -76,6 +75,24 @@
       justify-items: center;
       max-width: 30rem;
       margin: 1rem auto;
+    }
+  }
+
+  // Para pantallas pequeñas (menos de 480 px de ancho)
+  @media (max-width: 30rem) {
+    section.clasificacion {
+      form.granulometria {
+        display: grid;
+        margin: 1rem auto;
+        grid-template-columns: 4fr 5fr 5fr;
+        grid-template-rows: repeat(24, 1fr);
+        row-gap: 0.5rem;
+        align-items: center;
+        justify-items: center;
+      }
+      label.etiqueta-mm {
+        display: none;
+      }
     }
   }
 }
