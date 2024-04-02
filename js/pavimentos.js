@@ -165,15 +165,15 @@ function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, modul
 }
 
 function inicializarBotonCalcular() {
-  const boton = document.getElementById("boton-calcular");
+  const boton = document.getElementById("boton-calcular")
   boton.addEventListener("click", () => {
     // Lee los datos de entrada con la función y los guarda en un array
-    const datosEntradaLeidos = leerDatosEntrada();
+    const datosEntradaLeidos = leerDatosEntrada()
     // Obtiene las capas resueltas a partir de los datos leídos y las guarda en un array
-    const capas = crearYresolverCapas(...datosEntradaLeidos);
+    const capas = crearYresolverCapas(...datosEntradaLeidos)
     // el operador ... (spread) entrega los datos por separado del array de datos leídos
-    renderizarResultados(capas);
-    guardarResultadosEnStorage(...datosEntradaLeidos);
+    renderizarResultados(capas)
+    guardarResultadosEnStorage(...datosEntradaLeidos)
     Toastify({
       text: "Cálculo realizado y guardado",
       duration: 1500,
@@ -186,7 +186,7 @@ function inicializarBotonCalcular() {
         background: "#4CAF50",
       },
       onClick: function(){} // Callback after click
-    }).showToast();
+    }).showToast()
   });
 }
 

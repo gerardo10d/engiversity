@@ -38,6 +38,7 @@
     }
     label {
       color: $color-gris_oscuro;
+      text-align: center;
     }
     input {
       min-width: 2rem;
@@ -85,7 +86,7 @@
         display: grid;
         margin: 1rem auto;
         grid-template-columns: 4fr 5fr 5fr;
-        grid-template-rows: repeat(24, 1fr);
+        grid-template-rows: 3rem repeat(23, 1fr);
         row-gap: 0.5rem;
         align-items: center;
         justify-items: center;

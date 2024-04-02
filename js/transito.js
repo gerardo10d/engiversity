@@ -116,6 +116,31 @@ function graficar(valoresX, valoresY, tipo, idElementoDom) {
     });
 }
 
+function modificarFilasFormVel() {
+    const inputFilas = document.getElementById("filas-velocidad")
+    inputFilas.addEventListener("input", colocarFilasFormVel)
+}
+
+function colocarFilasFormVel() {
+    const inputFilas = document.getElementById("filas-velocidad")
+    const formVelocidades = document.querySelector(".formulario-velocidades")
+    formVelocidades.innerHTML = `
+    <label>Velocidades (km/h)</label>
+    <label>Frecuencia observada</label>
+    ` // Colocar siempre los encabezados del formulario
+    const numFilas = parseInt(inputFilas.value) // Obtener el número de filas deseado
+    // Crear y agregar filas al formulario
+    for (let i = 0; i < numFilas; i++) {
+        formVelocidades.innerHTML += `
+            <input type="number" class="velocidades" min="0" max="250" step="1" />
+            <input type="number" class="frecuencia-observada" min="0" step="1" />
+          `
+    }
+
+}
+
+
+
 // EJECUCIÓN DEL PROGRAMA
 const velocidades =
     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
@@ -127,5 +152,7 @@ const resultados = crearTablaFrecuencias(velocidades, frecuenciaObservada)
 graficar(resultados[2], resultados[4], "bar", "myChart")
 
 console.log(resultados)
+colocarFilasFormVel()
+modificarFilasFormVel()
 
 

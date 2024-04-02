@@ -34,7 +34,6 @@
     <main id="main-transito">
       <section class="velocidad-punto">
         <h1>Velocidad de punto</h1>
-        <h3>Definición</h3>
         <p>
           Se trata de la velocidad que lleva un móvil en un instante
           determinado. La mayor parte de los estudios de velocidad se refieren a
@@ -44,14 +43,17 @@
           punto de todos los vehículos en dicho tramo.
         </p>
       </section>
-      
+
       <section class="datos-entrada">
-        <input type="number" class="filas-velocidad" min="5" max="20" step="1" value="5">
-        <form >
-          <label>Velocidades (km/h)</label>
-          <label>Frecuencia observada</label>
-          <input type="number" class="velocidades" min="0" step="1" />
-          <input type="number" class="frecuencia-observada" min="0" step="1" />
+        <input
+          type="number"
+          id="filas-velocidad"
+          min="10"
+          max="25"
+          step="1"
+          value="10"
+        />
+        <form class="formulario-velocidades">
         </form>
       </section>
 

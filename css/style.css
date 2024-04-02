@@ -171,7 +171,8 @@ nav.navbar ul.navbar-lista {
     align-items: center;
     justify-items: center; }
   #main-suelos section.clasificacion label {
-    color: #333333; }
+    color: #333333;
+    text-align: center; }
   #main-suelos section.clasificacion input {
     min-width: 2rem;
     max-width: 4rem;
@@ -205,7 +206,7 @@ nav.navbar ul.navbar-lista {
       display: grid;
       margin: 1rem auto;
       grid-template-columns: 4fr 5fr 5fr;
-      grid-template-rows: repeat(24, 1fr);
+      grid-template-rows: 3rem repeat(23, 1fr);
       row-gap: 0.5rem;
       align-items: center;
       justify-items: center; }
@@ -243,14 +244,16 @@ nav.navbar ul.navbar-lista {
       margin: 1rem auto; }
   #main-transito section.datos-entrada form {
     display: grid;
-    max-width: 50rem;
+    max-width: 30rem;
     width: 90%;
     margin: 1rem auto;
     grid-template-columns: 5fr 6fr;
     row-gap: 0.3rem;
-    align-items: center; }
+    align-items: center;
+    justify-items: center; }
     #main-transito section.datos-entrada form label {
-      color: #333333; }
+      color: #333333;
+      text-align: center; }
     #main-transito section.datos-entrada form input {
       min-width: 2rem;
       max-width: 4rem;
