@@ -55,13 +55,16 @@ nav.navbar ul.navbar-lista {
       margin-bottom: 1rem; }
     #main-index section p {
       text-align: start;
-      line-height: 1.5rem; }
-      #main-index section p a {
+      line-height: 2rem;
+      margin: 1rem 0; }
+    #main-index section ul {
+      line-height: 2rem; }
+      #main-index section ul a {
         text-decoration: none;
         color: #005bb5; }
-        #main-index section p a:visited {
+        #main-index section ul a:visited {
           color: #007acc; }
-        #main-index section p a:hover {
+        #main-index section ul a:hover {
           color: #007acc; }
 
 #main-pavimentos {
@@ -251,7 +254,7 @@ nav.navbar ul.navbar-lista {
     row-gap: 0.3rem;
     align-items: center;
     justify-items: center; }
-    #main-transito section.datos-entrada form label {
+    #main-transito section.datos-entrada form span {
       color: #333333;
       text-align: center; }
     #main-transito section.datos-entrada form input {
