@@ -4,15 +4,29 @@ const roundCifras = (num, cifras) => Math.round(num * 10 ** cifras) / 10 ** cifr
 
 
 function leerDatosEntrada() {
-    const vel = document.getElementsByClassName("velocidades")
-    const frec = document.getElementsByClassName("frecuencia-observada")
-    const velocidades = []
-    const frecuencias = []
-    for (let i = 0; i < vel.length; i++) {
-        velocidades.push(parseFloat(vel[i].value) || 0)
-        frecuencias.push(parseFloat(frec[i].value) || 0)
+    // const vel = document.getElementsByClassName("velocidades")
+    // const frec = document.getElementsByClassName("frecuencia-observada")
+    // const velocidades = []
+    // const frecuencias = []
+    // for (let i = 0; i < vel.length; i++) {
+    //     velocidades.push(parseFloat(vel[i].value) || 0)
+    //     frecuencias.push(parseFloat(frec[i].value) || 0)
+    // }
+
+    const velocidades =
+        [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+    const frecuencias =
+        [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
+
+    const velocidadesRepetidas = [['Velocidad']];
+
+    for (let i = 0; i < velocidades.length; i++) {
+        for (let j = 0; j < frecuencias[i]; j++) {
+            velocidadesRepetidas.push([velocidades[i]])
+        }
     }
-    return [velocidades, frecuencias]
+
+    return [velocidades, frecuencias, velocidadesRepetidas]
 }
 
 function crearTablaFrecuencias(datos, frecuencias) {
@@ -22,7 +36,7 @@ function crearTablaFrecuencias(datos, frecuencias) {
     const m = Math.ceil(1 + 3.3 * Math.log10(n)) // número de intervalos
     const intAncho = Math.round((max - min) / m)
     const intNum = Math.ceil((max - min) / intAncho) + 1
-    console.log(n, m, min, max, intAncho, intNum)
+    // console.log(n, m, min, max, intAncho, intNum)
 
     const tablaFrecuencias = [[], [], [], [], [], [], [], [], [], []]
 
@@ -146,6 +160,21 @@ function graficar(valoresX, valoresY, tipo, idElementoDom) {
     });
 }
 
+function gCharts(datos, titulo, idElementoDom) {
+    google.charts.load("current", { packages: ["corechart"] })
+    google.charts.setOnLoadCallback(drawChart)
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(datos)
+        var options = {
+            title: titulo,
+            legend: { position: 'none' },
+        }
+
+        var chart = new google.visualization.Histogram(document.getElementById(idElementoDom))
+        chart.draw(data, options)
+    }
+}
+
 function modificarFilasFormVel() {
     const inputFilas = document.getElementById("filas-velocidad")
     inputFilas.addEventListener("input", colocarFilasFormVel)
@@ -172,14 +201,11 @@ function colocarFilasFormVel() {
 function inicializarBotonCalcular() {
     const boton = document.getElementById("calcular")
     boton.addEventListener("click", () => {
-        // const [velocidades, frecuencias] = leerDatosEntrada()
-
-        const velocidades =
-            [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
-        const frecuencias =
-            [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
-        const resultados = crearTablaFrecuencias(velocidades, frecuencias)
-        console.log(resultados)
+        const [velocidades, frecuencias, velocidadesRepetidas] = leerDatosEntrada()
+        // const resultados = crearTablaFrecuencias(velocidades, frecuencias)
+        // console.log(resultados)
+        // console.log(velocidadesRepetidas)
+        gCharts(velocidadesRepetidas,'Velocidades en km/h', "histog-vel")
 
         // graficar(resultados[2], resultados[4], "bar", "myChart")
     })
