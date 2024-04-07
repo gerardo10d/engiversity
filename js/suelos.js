@@ -261,8 +261,8 @@ function renderizarResultados(resultados) {
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
     const titulos = ["%Gruesos", "%Finos", "%Gravas", "%Arenas", "IP", "Clasificación", "Símbolo"]
-    
-    for (let i = 0; i<7; i++) {
+
+    for (let i = 0; i < 7; i++) {
         const divTitulo = document.createElement("div")
         divTitulo.className = "grid-item"
         divTitulo.innerText = titulos[i]
@@ -270,10 +270,19 @@ function renderizarResultados(resultados) {
         const spanResult = document.createElement("span")
         spanResult.innerText = resultados[i]
         contenedorResultados.append(spanResult)
-        
+
     }
 }
 
+function definirTipoCalculo() {
+    const radios = document.querySelectorAll('input[name="tipo-calculo"]')
+    radios.forEach(radio => {
+        radio.addEventListener('change', (event) => {
+            const tipoCalculo = event.target.value
+        })
+    })
+
+}
 
 function inicializarBotonCalcular() {
     const botonCalcularConMasas = document.getElementById("boton-calcular-masas")
@@ -291,5 +300,54 @@ function inicializarBotonCalcular() {
     });
 }
 
+function renderizarInputsGranulometria() {
+    document.body.onload = () => {
+
+        const formGranulometria = document.querySelector(".granulometria")
+        for (let i = 0; i < tamices[0].length; i++) {
+            const tamiz = tamices[0][i]
+            const abertura = tamices[1][i]
+            const idInputTamiz = tamiz.replace(/\s/g, "")
+            const idInputPasante = idInputTamiz.concat("-p")
+            formGranulometria.innerHTML += `
+            <label for=${idInputTamiz}>${tamiz}</label>
+            <label class="etiqueta-mm" for=${idInputTamiz}>${abertura}</label>
+            <input
+            type="number"
+            id=${idInputTamiz}
+            class="pesos-granulom"
+            min="0.00"
+            step="0.01"
+            />
+            <input
+            type="number"
+            id=${idInputPasante}
+            class="pasante-granulom"
+            min="0.00"
+            step="0.01"
+            />
+            `
+        }
+        formGranulometria.innerHTML += `
+        <label for="fondo">Fondo</label>
+          <label class="etiqueta-mm">-</label>
+          <input
+            type="number"
+            id="fondo"
+            class="pesos-granulom"
+            min="0.00"
+            step="0.01"
+          />
+          `
+    }
+}
+
 // INICIO DEL PROGRAMA
-inicializarBotonCalcular();
+const tamices = [
+    // 0       1      2
+    ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200"],
+    ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075"]
+]
+definirTipoCalculo()
+renderizarInputsGranulometria()
+inicializarBotonCalcular()
