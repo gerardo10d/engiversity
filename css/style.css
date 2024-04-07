@@ -162,7 +162,7 @@ nav.navbar ul.navbar-lista {
   #main-suelos section.clasificacion form.granulometria {
     display: grid;
     margin: 1rem auto;
-    grid-template-columns: 4fr 5fr 5fr 5fr;
+    grid-template-columns: 4fr 5fr 5fr;
     grid-template-rows: repeat(24, 1fr);
     row-gap: 0.5rem;
     align-items: center;

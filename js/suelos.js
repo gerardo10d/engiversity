@@ -1,23 +1,22 @@
 // FUNCIONES
 
-function leerDatosEntrada(esConPesos) {
+function leerDatosEntrada(esConMasas) {
     const LL = parseFloat(document.getElementById("LL").value)
     const LP = parseFloat(document.getElementById("LP").value)
-    if (esConPesos) {
-        const pesosGranulometria = document.getElementsByClassName("pesos-granulom")
+    const datosGranulometria = document.getElementsByClassName("datos-granulom")
+    if (esConMasas) {
         let pesosGtria = []
-        for (let i = 0; i < pesosGranulometria.length; i++) {
-            pesosGtria.push(parseFloat(pesosGranulometria[i].value) || 0)
+        for (let i = 0; i < datosGranulometria.length; i++) {
+            pesosGtria.push(parseFloat(datosGranulometria[i].value) || 0)
         }
         return [pesosGtria, LL, LP]
     } else {
-        const pasantesGranulometria = document.getElementsByClassName("pasante-granulom")
         let pasantesGtria = []
         let ultimoNoVacio = 100
-        for (let i = 0; i < pasantesGranulometria.length; i++) {
-            if (pasantesGranulometria[i].value) {
-                pasantesGtria.push(parseFloat(pasantesGranulometria[i].value))
-                ultimoNoVacio = parseFloat(pasantesGranulometria[i].value)
+        for (let i = 0; i < datosGranulometria.length; i++) {
+            if (datosGranulometria[i].value) {
+                pasantesGtria.push(parseFloat(datosGranulometria[i].value))
+                ultimoNoVacio = parseFloat(datosGranulometria[i].value)
             } else {
                 pasantesGtria.push(ultimoNoVacio)
             }
@@ -274,30 +273,15 @@ function renderizarResultados(resultados) {
     }
 }
 
-function definirTipoCalculo() {
-    const radios = document.querySelectorAll('input[name="tipo-calculo"]')
-    radios.forEach(radio => {
-        radio.addEventListener('change', (event) => {
-            const tipoCalculo = event.target.value
-        })
-    })
-
-}
-
 function inicializarBotonCalcular() {
-    const botonCalcularConMasas = document.getElementById("boton-calcular-masas")
-    const botonCalcularConPasantes = document.getElementById("boton-calcular-pasantes")
-    botonCalcularConMasas.addEventListener("click", () => {
-        const datosEntradaLeidos = leerDatosEntrada(true);
-        const resultados = resolverGranulometria(true, ...datosEntradaLeidos);
+    const botonCalcular = document.getElementById("boton-calcular")
+    botonCalcular.addEventListener("click", () => {
+        let tipoCalculo = document.querySelector('input[name="tipo-calculo"]:checked').value
+        tipoCalculo = tipoCalculo === 'masa' ? true : false
+        const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
+        const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
         renderizarResultados(resultados)
-    });
-
-    botonCalcularConPasantes.addEventListener("click", () => {
-        const datosEntradaLeidos = leerDatosEntrada(false);
-        const resultados = resolverGranulometria(false, ...datosEntradaLeidos);
-        renderizarResultados(resultados)
-    });
+    })
 }
 
 function renderizarInputsGranulometria() {
@@ -308,21 +292,13 @@ function renderizarInputsGranulometria() {
             const tamiz = tamices[0][i]
             const abertura = tamices[1][i]
             const idInputTamiz = tamiz.replace(/\s/g, "")
-            const idInputPasante = idInputTamiz.concat("-p")
             formGranulometria.innerHTML += `
             <label for=${idInputTamiz}>${tamiz}</label>
             <label class="etiqueta-mm" for=${idInputTamiz}>${abertura}</label>
             <input
             type="number"
             id=${idInputTamiz}
-            class="pesos-granulom"
-            min="0.00"
-            step="0.01"
-            />
-            <input
-            type="number"
-            id=${idInputPasante}
-            class="pasante-granulom"
+            class="datos-granulom"
             min="0.00"
             step="0.01"
             />
@@ -348,6 +324,6 @@ const tamices = [
     ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200"],
     ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075"]
 ]
-definirTipoCalculo()
+
 renderizarInputsGranulometria()
 inicializarBotonCalcular()
