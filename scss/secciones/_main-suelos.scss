@@ -19,12 +19,25 @@
 
   // Para la primera sección
   section.clasificacion {
+    p {
+      text-align: start;
+      line-height: 2rem;
+      margin: 1rem 0;
+    }
+    fieldset {
+      display: flex;
+      // justify-content: center;
+      gap: 1rem;
+      padding: 0.3rem;
+      border: 1px solid $color-gris_oscuro;
+      border-radius: 0.3rem;
+    }
     form.granulometria {
       display: grid;
       // width: 95%;
       margin: 1rem auto;
-      grid-template-columns: 4fr 5fr 5fr 5fr;
-      grid-template-rows: repeat(24, 1fr);
+      grid-template-columns: 4fr 5fr 5fr;
+      grid-template-rows: 3 rem repeat(23, 1fr);
       row-gap: 0.5rem;
       align-items: center;
       justify-items: center;
@@ -36,7 +49,10 @@
       align-items: center;
       justify-items: center;
     }
-    label {
+    span {
+      font-weight: bold;
+    }
+    label, span {
       color: $color-gris_oscuro;
       text-align: center;
     }
@@ -80,20 +96,11 @@
   }
 
   // Para pantallas pequeñas (menos de 480 px de ancho)
-  @media (max-width: 30rem) {
-    section.clasificacion {
-      form.granulometria {
-        display: grid;
-        margin: 1rem auto;
-        grid-template-columns: 4fr 5fr 5fr;
-        grid-template-rows: 3rem repeat(23, 1fr);
-        row-gap: 0.5rem;
-        align-items: center;
-        justify-items: center;
-      }
-      label.etiqueta-mm {
-        display: none;
-      }
-    }
-  }
+  // @media (max-width: 30rem) {
+  //   section.clasificacion {
+  //     label.etiqueta-mm {
+  //       display: none;
+  //     }
+  //   }
+  // }
 }

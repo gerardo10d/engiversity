@@ -1,23 +1,22 @@
 // FUNCIONES
 
-function leerDatosEntrada(esConPesos) {
+function leerDatosEntrada(esConMasas) {
     const LL = parseFloat(document.getElementById("LL").value)
     const LP = parseFloat(document.getElementById("LP").value)
-    if (esConPesos) {
-        const pesosGranulometria = document.getElementsByClassName("pesos-granulom")
+    const datosGranulometria = document.getElementsByClassName("datos-granulom")
+    if (esConMasas) {
         let pesosGtria = []
-        for (let i = 0; i < pesosGranulometria.length; i++) {
-            pesosGtria.push(parseFloat(pesosGranulometria[i].value) || 0)
+        for (let i = 0; i < datosGranulometria.length; i++) {
+            pesosGtria.push(parseFloat(datosGranulometria[i].value) || 0)
         }
         return [pesosGtria, LL, LP]
     } else {
-        const pasantesGranulometria = document.getElementsByClassName("pasante-granulom")
         let pasantesGtria = []
         let ultimoNoVacio = 100
-        for (let i = 0; i < pasantesGranulometria.length; i++) {
-            if (pasantesGranulometria[i].value) {
-                pasantesGtria.push(parseFloat(pasantesGranulometria[i].value))
-                ultimoNoVacio = parseFloat(pasantesGranulometria[i].value)
+        for (let i = 0; i < datosGranulometria.length; i++) {
+            if (datosGranulometria[i].value) {
+                pasantesGtria.push(parseFloat(datosGranulometria[i].value))
+                ultimoNoVacio = parseFloat(datosGranulometria[i].value)
             } else {
                 pasantesGtria.push(ultimoNoVacio)
             }
@@ -253,16 +252,13 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 }
 
 function renderizarResultados(resultados) {
-    const contenedorResultados = document.querySelector(".contenedor-resultados");
-    const cadena =
-        `%Gruesos: ${Math.round(resultados[0] * 100) / 100} | %Finos: ${Math.round(resultados[1] * 100) / 100} | %Gravas: ${Math.round(resultados[2] * 100) / 100} | %Arenas: ${Math.round(resultados[3] * 100) / 100} | IP: ${Math.round(resultados[4] * 100) / 100} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
-    // contenedorResultado.innerHTML = cadena;
+    const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
-    const titulos = ["%Gruesos", "%Finos", "%Gravas", "%Arenas", "IP", "Clasificación", "Símbolo"]
-    
-    for (let i = 0; i<7; i++) {
+    const titulos = ["%Gruesos:", "%Finos:", "%Gravas:", "%Arenas:", "IP:", "Clasificación:", "Símbolo:"]
+
+    for (let i = 0; i < 7; i++) {
         const divTitulo = document.createElement("div")
         divTitulo.className = "grid-item"
         divTitulo.innerText = titulos[i]
@@ -270,26 +266,50 @@ function renderizarResultados(resultados) {
         const spanResult = document.createElement("span")
         spanResult.innerText = resultados[i]
         contenedorResultados.append(spanResult)
-        
+
     }
 }
 
-
 function inicializarBotonCalcular() {
-    const botonCalcularConMasas = document.getElementById("boton-calcular-masas")
-    const botonCalcularConPasantes = document.getElementById("boton-calcular-pasantes")
-    botonCalcularConMasas.addEventListener("click", () => {
-        const datosEntradaLeidos = leerDatosEntrada(true);
-        const resultados = resolverGranulometria(true, ...datosEntradaLeidos);
+    const botonCalcular = document.getElementById("boton-calcular")
+    botonCalcular.addEventListener("click", () => {
+        let tipoCalculo = document.querySelector('input[name="tipo-calculo"]:checked').value
+        tipoCalculo = tipoCalculo === 'masa' ? true : false
+        const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
+        const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
         renderizarResultados(resultados)
-    });
+    })
+}
 
-    botonCalcularConPasantes.addEventListener("click", () => {
-        const datosEntradaLeidos = leerDatosEntrada(false);
-        const resultados = resolverGranulometria(false, ...datosEntradaLeidos);
-        renderizarResultados(resultados)
-    });
+function renderizarInputsGranulometria() {
+    document.body.onload = () => {
+
+        const formGranulometria = document.querySelector(".granulometria")
+        for (let i = 0; i < tamices[0].length; i++) {
+            const tamiz = tamices[0][i]
+            const abertura = tamices[1][i]
+            const idInputTamiz = tamiz.replace(/\s/g, "")
+            formGranulometria.innerHTML += `
+            <label for=${idInputTamiz}>${tamiz}</label>
+            <label class="etiqueta-mm" for=${idInputTamiz}>${abertura}</label>
+            <input
+            type="number"
+            id=${idInputTamiz}
+            class="datos-granulom"
+            min="0.00"
+            step="0.01"
+            />
+            `
+        }
+    }
 }
 
 // INICIO DEL PROGRAMA
-inicializarBotonCalcular();
+const tamices = [
+    // 0       1      2
+    ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200", "Fondo"],
+    ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075", "-"]
+]
+
+renderizarInputsGranulometria()
+inicializarBotonCalcular()
