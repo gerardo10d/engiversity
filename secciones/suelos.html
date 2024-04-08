@@ -25,15 +25,38 @@
     <main id="main-suelos">
       <section class="clasificacion">
         <h1>Sistema Unificado de Clasificación de Suelos</h1>
+        <p>
+          Este sistema se fundamenta en la norma ASTM D2487 y se emplea con
+          fines de ingeniería. Su enfoque se centra en la evaluación en
+          laboratorio de las características granulométricas, el límite líquido
+          y el índice de plasticidad del suelo.
+        </p>
         <fieldset>
-          <input type="radio" id="masa" name="tipo-calculo" value="masa" checked /><label for="masa">Masa retenida</label>
-          <input type="radio" id="pasante" name="tipo-calculo" value="pasante" /><label for="pasante">Pasante</label>
+          <h4>Tipo de cálculo:</h4>
+          <div>
+            <input
+              type="radio"
+              id="masa"
+              name="tipo-calculo"
+              value="masa"
+              checked
+            />
+            <label for="masa">Masa retenida</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="pasante"
+              name="tipo-calculo"
+              value="pasante"
+            />
+            <label for="pasante">Pasante</label>
+          </div>
         </fieldset>
         <form class="granulometria">
-          <label>Tamiz (U.S.)</label>
-          <label class="etiqueta-mm">Abertura (mm)</label>
-          <label>Valor</label>
-          <!-- <label>Pasante (%)</label> -->
+          <span>Tamiz (U.S.)</span>
+          <span class="etiqueta-mm">Abertura (mm)</span>
+          <span>Valor</span>
         </form>
         <form class="limites">
           <label for="LL">LL:</label>
@@ -42,9 +65,7 @@
           <input type="number" id="LP" min="0.00" step="0.01" />
         </form>
         <div class="botones">
-          <button type="button" id="boton-calcular">
-            Calcular
-          </button>
+          <button type="button" id="boton-calcular">Calcular</button>
         </div>
       </section>
       <section class="resultados">

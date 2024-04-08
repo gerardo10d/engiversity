@@ -159,11 +159,21 @@ nav.navbar ul.navbar-lista {
     #main-suelos section h2 {
       text-align: center;
       margin: 1rem auto; }
+  #main-suelos section.clasificacion p {
+    text-align: start;
+    line-height: 2rem;
+    margin: 1rem 0; }
+  #main-suelos section.clasificacion fieldset {
+    display: flex;
+    gap: 1rem;
+    padding: 0.3rem;
+    border: 1px solid #333333;
+    border-radius: 0.3rem; }
   #main-suelos section.clasificacion form.granulometria {
     display: grid;
     margin: 1rem auto;
     grid-template-columns: 4fr 5fr 5fr;
-    grid-template-rows: repeat(24, 1fr);
+    grid-template-rows: 3 rem repeat(23, 1fr);
     row-gap: 0.5rem;
     align-items: center;
     justify-items: center; }
@@ -173,7 +183,9 @@ nav.navbar ul.navbar-lista {
     grid-template-columns: 1fr 2fr 1fr 2fr;
     align-items: center;
     justify-items: center; }
-  #main-suelos section.clasificacion label {
+  #main-suelos section.clasificacion span {
+    font-weight: bold; }
+  #main-suelos section.clasificacion label, #main-suelos section.clasificacion span {
     color: #333333;
     text-align: center; }
   #main-suelos section.clasificacion input {
@@ -204,17 +216,6 @@ nav.navbar ul.navbar-lista {
     justify-items: center;
     max-width: 30rem;
     margin: 1rem auto; }
-  @media (max-width: 30rem) {
-    #main-suelos section.clasificacion form.granulometria {
-      display: grid;
-      margin: 1rem auto;
-      grid-template-columns: 4fr 5fr 5fr;
-      grid-template-rows: 3rem repeat(23, 1fr);
-      row-gap: 0.5rem;
-      align-items: center;
-      justify-items: center; }
-    #main-suelos section.clasificacion label.etiqueta-mm {
-      display: none; } }
 
 #main-hidraulica {
   margin: 0 auto;

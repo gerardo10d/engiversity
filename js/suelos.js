@@ -252,14 +252,11 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 }
 
 function renderizarResultados(resultados) {
-    const contenedorResultados = document.querySelector(".contenedor-resultados");
-    const cadena =
-        `%Gruesos: ${Math.round(resultados[0] * 100) / 100} | %Finos: ${Math.round(resultados[1] * 100) / 100} | %Gravas: ${Math.round(resultados[2] * 100) / 100} | %Arenas: ${Math.round(resultados[3] * 100) / 100} | IP: ${Math.round(resultados[4] * 100) / 100} | Clasificación del suelo: ${resultados[5]}. Símbolo: ${resultados[6]}`
-    // contenedorResultado.innerHTML = cadena;
+    const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
-    const titulos = ["%Gruesos", "%Finos", "%Gravas", "%Arenas", "IP", "Clasificación", "Símbolo"]
+    const titulos = ["%Gruesos:", "%Finos:", "%Gravas:", "%Arenas:", "IP:", "Clasificación:", "Símbolo:"]
 
     for (let i = 0; i < 7; i++) {
         const divTitulo = document.createElement("div")
@@ -304,25 +301,14 @@ function renderizarInputsGranulometria() {
             />
             `
         }
-        formGranulometria.innerHTML += `
-        <label for="fondo">Fondo</label>
-          <label class="etiqueta-mm">-</label>
-          <input
-            type="number"
-            id="fondo"
-            class="pesos-granulom"
-            min="0.00"
-            step="0.01"
-          />
-          `
     }
 }
 
 // INICIO DEL PROGRAMA
 const tamices = [
     // 0       1      2
-    ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200"],
-    ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075"]
+    ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200", "Fondo"],
+    ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075", "-"]
 ]
 
 renderizarInputsGranulometria()
