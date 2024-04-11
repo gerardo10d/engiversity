@@ -186,7 +186,7 @@ function colocarFilasFormVel() {
     formVelocidades.innerHTML = `
     <span>Velocidades (km/h)</span>
     <span>Frecuencia observada</span>
-    ` // Colocar siempre los encabezados del formulario
+    `
     const numFilas = parseInt(inputFilas.value) // Obtener el número de filas deseado
     // Crear y agregar filas al formulario
     for (let i = 0; i < numFilas; i++) {
