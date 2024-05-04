@@ -41,10 +41,6 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
     }
 
     let resultados = []
-    const aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
-    const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
-    const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
-    const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
     const finos = pasanteGtria[ubicacionMalla200];
     const gruesos = 100 - finos
     const arenas = pasanteGtria[ubicacionMalla4] - finos;
@@ -54,6 +50,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
     let simboloSuelo = null;
     let Cu = null
     let Cc = null
+
 
     function resolverSufijosYprefijos(clasificacionSuelo, simboloSuelo, gruesos, arenas, gravas) {
 
@@ -248,7 +245,8 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
         }
         resultados = [clasificacionSuelo, simboloSuelo, Cu, Cc]
     }
-    return [gruesos, finos, gravas, arenas, IP, ...resultados];
+
+    return [gruesos, finos, gravas, arenas, IP, ...resultados, pasanteGtria];
 }
 
 function renderizarResultados(resultados) {
@@ -268,6 +266,9 @@ function renderizarResultados(resultados) {
         contenedorResultados.append(spanResult)
 
     }
+    console.log(resultados[7])
+
+    // gCharts('velocidadesRepetidas', 'Granulometría', "curva-granulometria")
 }
 
 function inicializarBotonCalcular() {
@@ -278,6 +279,7 @@ function inicializarBotonCalcular() {
         const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
         const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
         renderizarResultados(resultados)
+
     })
 }
 
@@ -304,12 +306,57 @@ function renderizarInputsGranulometria() {
     }
 }
 
+function gCharts(datos, titulo, idElementoDom) {
+    google.charts.load("current", { packages: ["corechart", "line"] })
+    google.charts.setOnLoadCallback(drawChart)
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'X');
+        data.addColumn('number', '% Pasa');
+
+        data.addRows([
+            [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
+            [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
+            [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
+            [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
+            [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
+            [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
+            [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
+            [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
+            [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
+            [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
+            [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
+            [66, 70], [67, 72], [68, 75], [69, 80]
+        ]);
+
+        var options = {
+            title: titulo,
+            legend: { position: 'none' },
+            hAxis: {
+                title: 'Tamaño (mm)',
+                logScale: true
+            },
+            vAxis: {
+                title: '% Pasa'
+            },
+            // backgroundColor: '#f1f8e9'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(idElementoDom));
+        chart.draw(data, options);
+    }
+}
+
 // INICIO DEL PROGRAMA
 const tamices = [
     // 0       1      2
     ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200", "Fondo"],
     ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075", "-"]
 ]
+const aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
+const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
+const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
+const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
 
 renderizarInputsGranulometria()
 inicializarBotonCalcular()
