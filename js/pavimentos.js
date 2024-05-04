@@ -9,7 +9,7 @@ class CapaPavimento {
   resolverCapa(
     nese,
     zr,
-    carreteraGrande,
+    perdidaServ,
     capa,
     moduloInfMpa,
     SNcorregidoAnterior = 0
@@ -18,7 +18,6 @@ class CapaPavimento {
     let moduloInfPsi = moduloInfMpa * 145; // Módulo de elasticidad de la capa inferior en MPa y lo convierte a psi
     const tolerancia = 1; // se tolera 1% de error
     let error; // Error porcentual entre la aproximación calculada y la asumida
-    let perdidaServ = carreteraGrande ? 1.7 : 2.2; // Pérdida de serviciabilidad del pavimento
     let i = 0; // Conteo de iteraciones
     let semillaSN = 4.0; // SN semilla asumido para iniciar la iteración actual
     let calcSN; // SN calculado
@@ -74,26 +73,25 @@ class CapaPavimento {
 
 function leerDatosEntrada() {
   // Leer datos de entrada solicitados al usuario---------------------------------------------
-  const nese = parseFloat(document.getElementById("nese").value) * 1e6;
-  const confiabilidad = parseFloat(document.getElementById("R").value); // Confiabilidad del cálculo (r)
-  const carreteraGrande =
-    document.getElementById("tipoCarretera").value === "grande"; // ¿Es carretera grande o pequeña?
+  const nese = parseFloat(document.getElementById("nese").value) * 1e6
+  const confiabilidad = parseFloat(document.getElementById("R").value) // Confiabilidad del cálculo (r)
+  const perdidaServ = parseFloat(document.getElementById("perdidaServ").value) // Pérdida de serviciabilidad Pi-Pt
   // Módulos de las capas del pavimento
-  const moduloCapa1 = parseFloat(document.getElementById("modulo1").value); //MPa
-  const moduloCapa2 = parseFloat(document.getElementById("modulo2").value); //MPa
-  const moduloCapa3 = parseFloat(document.getElementById("modulo3").value); //MPa
-  const moduloCapa4 = parseFloat(document.getElementById("modulo4").value); //MPa
+  const moduloCapa1 = parseFloat(document.getElementById("modulo1").value) //MPa
+  const moduloCapa2 = parseFloat(document.getElementById("modulo2").value) //MPa
+  const moduloCapa3 = parseFloat(document.getElementById("modulo3").value) //MPa
+  const moduloCapa4 = parseFloat(document.getElementById("modulo4").value) //MPa
   // Coeficiente de drenaje para capas 2 y 3
-  const m = parseFloat(document.getElementById("m").value);
+  const m = parseFloat(document.getElementById("m").value)
 
   // Constantes del método------------------------------------------------------------
   // Obtener zr según la confiabilidad r
   const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr;
 
-  return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande, confiabilidad];
+  return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ, confiabilidad];
 }
 
-function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande) {
+function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ) {
   // Crear capas-------------------------------------------------------------------------
   const capas = [
     new CapaPavimento(moduloCapa1),
@@ -101,9 +99,9 @@ function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4,
     new CapaPavimento(moduloCapa3, m)
   ]
   // Resolver capas----------------------------------------------------------------------
-  capas[0].resolverCapa(nese, zr, carreteraGrande, 1, moduloCapa2);
-  capas[1].resolverCapa(nese, zr, carreteraGrande, 2, moduloCapa3, capas[0].SNcorregido);
-  capas[2].resolverCapa(nese, zr, carreteraGrande, 3, moduloCapa4, capas[1].SNcorregido);
+  capas[0].resolverCapa(nese, zr, perdidaServ, 1, moduloCapa2);
+  capas[1].resolverCapa(nese, zr, perdidaServ, 2, moduloCapa3, capas[0].SNcorregido);
+  capas[2].resolverCapa(nese, zr, perdidaServ, 3, moduloCapa4, capas[1].SNcorregido);
 
   return capas;
 }
@@ -149,12 +147,12 @@ function renderizarResultados(capas) {
   }
 }
 
-function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, carreteraGrande, confiabilidad) {
+function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ, confiabilidad) {
   // Guardar en storage los datos de entrada y los resultados
   const datosEntrada = {
     nese: nese,
     confiabilidad: confiabilidad,
-    carreteraGrande: carreteraGrande,
+    perdidaServ: perdidaServ,
     m: m,
     moduloCapa1: moduloCapa1,
     moduloCapa2: moduloCapa2,
@@ -185,7 +183,7 @@ function inicializarBotonCalcular() {
       style: {
         background: "#4CAF50",
       },
-      onClick: function(){} // Callback after click
+      onClick: function () { } // Callback after click
     }).showToast()
   });
 }
@@ -196,7 +194,7 @@ function inicializarBotonRecuperar() {
     const datosEntrada = JSON.parse(localStorage.getItem("datosEntrada"));
     document.getElementById("nese").value = datosEntrada.nese / 1e6 || "";
     document.getElementById("R").value = datosEntrada.confiabilidad || "";
-    document.getElementById("tipoCarretera").value = datosEntrada.carreteraGrande ? "grande" : "pequena" || "";
+    document.getElementById("perdidaServ").value = datosEntrada.perdidaServ || "";
     document.getElementById("m").value = datosEntrada.m || "";
     document.getElementById("modulo1").value = datosEntrada.moduloCapa1 || "";
     document.getElementById("modulo2").value = datosEntrada.moduloCapa2 || "";
@@ -235,7 +233,7 @@ const desvNormalEstandar = [
   { r: 99.99, zr: 3.75 },
 ];
 let espesoresConstructivosCapas = [];
-obtenerEspesores().then(() =>{
+obtenerEspesores().then(() => {
   inicializarBotonCalcular();
 })
 inicializarBotonRecuperar();
