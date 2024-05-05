@@ -82,21 +82,22 @@ function leerDatosEntrada() {
   const moduloCapa3 = parseFloat(document.getElementById("modulo3").value) //MPa
   const moduloCapa4 = parseFloat(document.getElementById("modulo4").value) //MPa
   // Coeficiente de drenaje para capas 2 y 3
-  const m = parseFloat(document.getElementById("m").value)
+  const m2 = parseFloat(document.getElementById("m2").value)
+  const m3 = parseFloat(document.getElementById("m3").value)
 
   // Constantes del método------------------------------------------------------------
   // Obtener zr según la confiabilidad r
   const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr;
 
-  return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ, confiabilidad];
+  return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m2, m3, nese, zr, perdidaServ, confiabilidad];
 }
 
-function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ) {
+function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m2, m3, nese, zr, perdidaServ) {
   // Crear capas-------------------------------------------------------------------------
   const capas = [
     new CapaPavimento(moduloCapa1),
-    new CapaPavimento(moduloCapa2, m),
-    new CapaPavimento(moduloCapa3, m)
+    new CapaPavimento(moduloCapa2, m2),
+    new CapaPavimento(moduloCapa3, m3)
   ]
   // Resolver capas----------------------------------------------------------------------
   capas[0].resolverCapa(nese, zr, perdidaServ, 1, moduloCapa2);
@@ -107,53 +108,80 @@ function crearYresolverCapas(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4,
 }
 
 function renderizarResultados(capas) {
-  const contenedorResultados = document.querySelector(".grid-container");
-  contenedorResultados.innerHTML = "";
-  // Colocar divs con títulos----------------------------------------------------------------------
-  const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"];
-  for (const titulo of titulos) {
-    const divTitulo = document.createElement("div");
-    divTitulo.className = "grid-item titulo-result";
-    divTitulo.innerText = titulo;
-    contenedorResultados.append(divTitulo);
-  }
 
-  // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
-  const mensajeError = "Error";
-  for (const capa of capas) {
-    // Div con el número de la capa--------------------
-    const divCapa = document.createElement("div");
-    divCapa.className = "grid-item";
-    divCapa.innerText = capas.indexOf(capa) + 1;
-    contenedorResultados.append(divCapa);
+  // ------------------------------------------------------------------------------------
+  const mensajeError = "Error"
+  const spanh1 = document.getElementById("h1")
+  spanh1.innerText = capas[0].dCorregidoCm || mensajeError
+  const spanh2 = document.getElementById("h2")
+  spanh2.innerText = capas[1].dCorregidoCm || mensajeError
+  const spanh3 = document.getElementById("h3")
+  spanh3.innerText = capas[2].dCorregidoCm || mensajeError
 
-    // Div con el SNe de la capa------------------------
-    const divSNe = document.createElement("div");
-    divSNe.className = "grid-item";
-    divSNe.innerText = (capa.SNe || mensajeError);
-    contenedorResultados.append(divSNe);
+  const spanSNe1 = document.getElementById("SNe1")
+  spanSNe1.innerText = capas[0].SNe || mensajeError
+  const spanSNe2 = document.getElementById("SNe2")
+  spanSNe2.innerText = capas[1].SNe || mensajeError
+  const spanSNe3 = document.getElementById("SNe3")
+  spanSNe3.innerText = capas[2].SNe || mensajeError
 
-    // Div con el espesor de la capa--------------------
-    const divEspesor = document.createElement("div");
-    divEspesor.className = "grid-item";
-    divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
-    contenedorResultados.append(divEspesor);
+  const spanSNc1 = document.getElementById("SN*1")
+  spanSNc1.innerText = capas[0].SNcorregido || mensajeError
+  const spanSNc2 = document.getElementById("SN*2")
+  spanSNc2.innerText = capas[1].SNcorregido || mensajeError
+  const spanSNc3 = document.getElementById("SN*3")
+  spanSNc3.innerText = capas[2].SNcorregido || mensajeError
+  // ------------------------------------------------------------------------------------
 
-    // Div con el SNcorregido de la capa----------------
-    const divSNcorregido = document.createElement("div");
-    divSNcorregido.className = "grid-item";
-    divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
-    contenedorResultados.append(divSNcorregido);
-  }
+
+  // const contenedorResultados = document.querySelector(".grid-container")
+  // contenedorResultados.innerHTML = ""
+  // // Colocar divs con títulos----------------------------------------------------------------------
+  // const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"]
+  // for (const titulo of titulos) {
+  //   const divTitulo = document.createElement("div");
+  //   divTitulo.className = "grid-item titulo-result";
+  //   divTitulo.innerText = titulo;
+  //   contenedorResultados.append(divTitulo);
+  // }
+
+  // // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
+  // for (const capa of capas) {
+  //   // Div con el número de la capa--------------------
+  //   const divCapa = document.createElement("div");
+  //   divCapa.className = "grid-item";
+  //   divCapa.innerText = capas.indexOf(capa) + 1;
+  //   contenedorResultados.append(divCapa);
+
+  //   // Div con el SNe de la capa------------------------
+  //   const divSNe = document.createElement("div");
+  //   divSNe.className = "grid-item";
+  //   divSNe.innerText = (capa.SNe || mensajeError);
+  //   contenedorResultados.append(divSNe);
+
+  //   // Div con el espesor de la capa--------------------
+  //   const divEspesor = document.createElement("div");
+  //   divEspesor.className = "grid-item";
+  //   divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
+  //   contenedorResultados.append(divEspesor);
+
+  //   // Div con el SNcorregido de la capa----------------
+  //   const divSNcorregido = document.createElement("div");
+  //   divSNcorregido.className = "grid-item";
+  //   divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
+  //   contenedorResultados.append(divSNcorregido);
+  // }
 }
 
-function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m, nese, zr, perdidaServ, confiabilidad) {
+function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m2, m3, nese, zr, perdidaServ, confiabilidad) {
   // Guardar en storage los datos de entrada y los resultados
   const datosEntrada = {
     nese: nese,
     confiabilidad: confiabilidad,
+    zr: zr,
     perdidaServ: perdidaServ,
-    m: m,
+    m2: m2,
+    m3: m3,
     moduloCapa1: moduloCapa1,
     moduloCapa2: moduloCapa2,
     moduloCapa3: moduloCapa3,
@@ -195,7 +223,8 @@ function inicializarBotonRecuperar() {
     document.getElementById("nese").value = datosEntrada.nese / 1e6 || "";
     document.getElementById("R").value = datosEntrada.confiabilidad || "";
     document.getElementById("perdidaServ").value = datosEntrada.perdidaServ || "";
-    document.getElementById("m").value = datosEntrada.m || "";
+    document.getElementById("m2").value = datosEntrada.m2 || "";
+    document.getElementById("m3").value = datosEntrada.m3 || "";
     document.getElementById("modulo1").value = datosEntrada.moduloCapa1 || "";
     document.getElementById("modulo2").value = datosEntrada.moduloCapa2 || "";
     document.getElementById("modulo3").value = datosEntrada.moduloCapa3 || "";

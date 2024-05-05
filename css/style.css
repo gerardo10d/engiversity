@@ -68,7 +68,6 @@ nav.navbar ul.navbar-lista {
           color: #007acc; }
 
 #main-pavimentos {
-  margin: 0 auto;
   padding: 1.25rem; }
   #main-pavimentos section {
     max-width: 50rem;
@@ -79,7 +78,8 @@ nav.navbar ul.navbar-lista {
       margin-bottom: 1rem; }
     #main-pavimentos section h2 {
       text-align: center;
-      margin: 1rem auto; }
+      margin-top: 1rem;
+      margin-bottom: 0.5rem; }
   #main-pavimentos section.espesores-constructivos img {
     width: 90%;
     max-width: 35rem;
@@ -94,29 +94,66 @@ nav.navbar ul.navbar-lista {
         color: #007acc; }
       #main-pavimentos section.espesores-constructivos p a:hover {
         color: #007acc; }
-  #main-pavimentos section.datos-entrada form {
+  #main-pavimentos section.calculos form {
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
-    max-width: 50rem;
     width: 90%;
-    margin: 1rem auto; }
-    #main-pavimentos section.datos-entrada form div label {
-      display: block;
-      margin: 1rem 0.2rem 0;
-      color: #333333; }
-    #main-pavimentos section.datos-entrada form div input,
-    #main-pavimentos section.datos-entrada form div select {
-      min-width: 4.5rem;
-      max-width: 6rem;
-      padding: 0.2rem;
+    margin: auto; }
+    #main-pavimentos section.calculos form div.objetivos-diseno {
+      max-width: 20rem;
+      margin: auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      align-items: center;
+      row-gap: 0.3rem;
       border: 1px solid #333333;
-      border-radius: 0.3rem; }
-  #main-pavimentos section.datos-entrada .botones {
+      border-radius: 1rem; }
+      #main-pavimentos section.calculos form div.objetivos-diseno label {
+        justify-self: start;
+        color: #333333; }
+      #main-pavimentos section.calculos form div.objetivos-diseno input,
+      #main-pavimentos section.calculos form div.objetivos-diseno select {
+        justify-self: end;
+        min-width: 4.5rem;
+        max-width: 6rem;
+        min-height: 1.25rem;
+        padding: 0.2rem;
+        border: 1px solid #333333;
+        border-radius: 0.3rem; }
+    #main-pavimentos section.calculos form div.materiales-resultados {
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+      justify-items: center;
+      align-items: center;
+      row-gap: 0.2rem;
+      column-gap: 1rem;
+      border: 1px solid #333333;
+      border-radius: 1rem; }
+      @media (max-width: 600px) {
+        #main-pavimentos section.calculos form div.materiales-resultados {
+          overflow-x: scroll; } }
+      #main-pavimentos section.calculos form div.materiales-resultados span.titulo {
+        font-weight: bold;
+        text-align: center; }
+      #main-pavimentos section.calculos form div.materiales-resultados input {
+        min-width: 4.5rem;
+        max-width: 6rem;
+        padding: 0.2rem;
+        border: 1px solid #333333;
+        border-radius: 0.3rem; }
+  #main-pavimentos section.calculos .botones {
     display: flex;
-    justify-content: space-evenly; }
-    #main-pavimentos section.datos-entrada .botones button {
+    max-width: 20rem;
+    justify-content: space-evenly;
+    margin: 1rem auto 0 auto; }
+    #main-pavimentos section.calculos .botones button {
       display: block;
-      margin: 2rem auto;
+      margin: 0 1rem;
       background-color: #333333;
       color: #f8f8f8;
       padding: 0.5rem 1rem;
@@ -124,19 +161,8 @@ nav.navbar ul.navbar-lista {
       border-radius: 0.4rem;
       cursor: pointer;
       transition: background-color 0.4s ease; }
-      #main-pavimentos section.datos-entrada .botones button:hover {
+      #main-pavimentos section.calculos .botones button:hover {
         background-color: #999999; }
-  #main-pavimentos section.resultados .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 2fr 2fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    justify-items: center;
-    max-width: 30rem;
-    margin: 1rem auto; }
-    #main-pavimentos section.resultados .grid-container .titulo-result {
-      font-weight: bold;
-      margin: 0 0.2rem;
-      text-align: center; }
 
 #main-suelos {
   margin: 0 auto;
@@ -210,7 +236,6 @@ nav.navbar ul.navbar-lista {
     margin: 1rem auto; }
 
 #main-hidraulica {
-  margin: 0 auto;
   padding: 1.25rem; }
   #main-hidraulica section {
     max-width: 50rem;
