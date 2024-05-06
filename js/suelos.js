@@ -1,5 +1,7 @@
 // FUNCIONES
 
+const roundCifras = (num, cifras) => Math.round(num * 10 ** cifras) / 10 ** cifras
+
 function leerDatosEntrada(esConMasas) {
     const LL = parseFloat(document.getElementById("LL").value)
     const LP = parseFloat(document.getElementById("LP").value)
@@ -26,11 +28,11 @@ function leerDatosEntrada(esConMasas) {
 }
 
 function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
-    let pasanteGtria = [];
+    let pasanteGtria = []
     if (esConPesos) {
-        const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0);
-        let retParcial = [];
-        let retParcialAcum = [];
+        const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0)
+        let retParcial = []
+        let retParcialAcum = []
         for (let i = 0; i < pesosOpasantesGtria.length; i++) {
             retParcial[i] = pesosOpasantesGtria[i] / totalPesos * 100;
             retParcialAcum[i] = retParcial[i] + (retParcialAcum[i - 1] || 0);
@@ -41,19 +43,16 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
     }
 
     let resultados = []
-    const aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
-    const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
-    const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
-    const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
-    const finos = pasanteGtria[ubicacionMalla200];
+    const finos = pasanteGtria[ubicacionMalla200]
     const gruesos = 100 - finos
-    const arenas = pasanteGtria[ubicacionMalla4] - finos;
-    const gravas = pasanteGtria[ubicacionMalla3in] - pasanteGtria[ubicacionMalla4];
-    const IP = LL - LP;
-    let clasificacionSuelo = null;
-    let simboloSuelo = null;
+    const arenas = pasanteGtria[ubicacionMalla4] - finos
+    const gravas = pasanteGtria[ubicacionMalla3in] - pasanteGtria[ubicacionMalla4]
+    const IP = LL - LP
+    let clasificacionSuelo = null
+    let simboloSuelo = null
     let Cu = null
     let Cc = null
+
 
     function resolverSufijosYprefijos(clasificacionSuelo, simboloSuelo, gruesos, arenas, gravas) {
 
@@ -248,10 +247,11 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
         }
         resultados = [clasificacionSuelo, simboloSuelo, Cu, Cc]
     }
-    return [gruesos, finos, gravas, arenas, IP, ...resultados];
+
+    return [roundCifras(gruesos, 2), roundCifras(finos, 2), roundCifras(gravas, 2), roundCifras(arenas, 2), roundCifras(IP, 2), ...resultados, pasanteGtria]
 }
 
-function renderizarResultados(resultados) {
+function renderizarResultados(resultados, datosGraficar) {
     const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
@@ -268,6 +268,35 @@ function renderizarResultados(resultados) {
         contenedorResultados.append(spanResult)
 
     }
+
+    gCharts(datosGraficar, "Curva granulométrica", "curva-granulometria")
+}
+
+function ordenarResultadosParaGraficar(resultados) {
+
+    const pasantes = resultados.at(-1) // último elemento del array resultados, que corresponde al array de los pasantes
+    pasantes.pop() // con este método se elimina el último elemento que es el fondo y no se requiere
+    let mayor = Math.max(...pasantes) // se esperaría que el mayor sea 100
+    let elementoGraficar = pasantes.find((elemento) => elemento < mayor) // encuentra el primer elemento menor al mayor
+    let indiceGraficar = pasantes.indexOf(elementoGraficar) // determina el índice de ese elemento
+    const aberturaTamizmmGraficar = []
+    const pasantesGraficar = []
+    aberturaTamizmmGraficar.push(aberturaTamizmm[indiceGraficar - 1]) // escoge el tamiz que corresponde al anterior al elemento, que sería el 100
+    pasantesGraficar.push(pasantes[indiceGraficar - 1])
+    do {
+        indiceGraficar = pasantes.indexOf(elementoGraficar) // determina el índice de ese elemento
+        aberturaTamizmmGraficar.push(aberturaTamizmm[indiceGraficar])
+        pasantesGraficar.push(pasantes[indiceGraficar])
+        mayor = elementoGraficar
+        elementoGraficar = pasantes.find((elemento) => elemento < mayor) // encuentra el primer elemento menor al mayor
+    } while (elementoGraficar !== undefined)
+
+    const datosGraficar = []
+    for (let i = 0; i < pasantesGraficar.length; i++) {
+        datosGraficar.push([aberturaTamizmmGraficar[i], pasantesGraficar[i]])
+    }
+    return datosGraficar
+
 }
 
 function inicializarBotonCalcular() {
@@ -277,7 +306,8 @@ function inicializarBotonCalcular() {
         tipoCalculo = tipoCalculo === 'masa' ? true : false
         const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
         const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
-        renderizarResultados(resultados)
+        const datosGraficar = ordenarResultadosParaGraficar(resultados)
+        renderizarResultados(resultados, datosGraficar)
     })
 }
 
@@ -304,12 +334,43 @@ function renderizarInputsGranulometria() {
     }
 }
 
+function gCharts(datosGraficar, titulo, idElementoDom) {
+    google.charts.load("current", { packages: ["corechart", "line"] })
+    google.charts.setOnLoadCallback(drawChart)
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'X');
+        data.addColumn('number', '% Pasa');
+
+        data.addRows(datosGraficar);
+        var options = {
+            title: titulo,
+            legend: { position: 'none' },
+            hAxis: {
+                title: 'Tamaño (mm)',
+                logScale: true // para que sea logarítimica
+            },
+            vAxis: {
+                title: '% Pasa'
+            },
+            // backgroundColor: '#f1f8e9'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById(idElementoDom));
+        chart.draw(data, options);
+    }
+}
+
 // INICIO DEL PROGRAMA
 const tamices = [
     // 0       1      2
     ["3 in", "2.5 in", "2 in", "1.5 in", "1 in", "3/4 in", "1/2 in", "3/8 in", "1/4 in", "#4", "#8", "#10", "#16", "#20", "#30", "#40", "#50", "#60", "#80", "#100", "#140", "#200", "Fondo"],
     ["75", "63", "50", "37.5", "25", "19", "12.5", "9.5", "6.3", "4.75", "2.36", "2.0", "1.10", "0.850", "0.600", "0.425", "0.300", "0.250", "0.180", "0.150", "0.106", "0.075", "-"]
 ]
+const aberturaTamizmm = [75, 63, 50, 37.5, 25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 2.0, 1.1, 0.85, 0.6, 0.425, 0.3, 0.25, 0.18, 0.15, 0.106, 0.075]
+const ubicacionMalla200 = 21 // Modificar según la ubicación en la lista de tamices
+const ubicacionMalla4 = 9 // Modificar según la ubicación en la lista de tamices
+const ubicacionMalla3in = 0 // Modificar según la ubicación en la lista de tamices
 
 renderizarInputsGranulometria()
 inicializarBotonCalcular()
