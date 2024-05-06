@@ -1,5 +1,7 @@
 // FUNCIONES
 
+const roundCifras = (num, cifras) => Math.round(num * 10 ** cifras) / 10 ** cifras
+
 function leerDatosEntrada(esConMasas) {
     const LL = parseFloat(document.getElementById("LL").value)
     const LP = parseFloat(document.getElementById("LP").value)
@@ -26,11 +28,11 @@ function leerDatosEntrada(esConMasas) {
 }
 
 function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
-    let pasanteGtria = [];
+    let pasanteGtria = []
     if (esConPesos) {
-        const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0);
-        let retParcial = [];
-        let retParcialAcum = [];
+        const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0)
+        let retParcial = []
+        let retParcialAcum = []
         for (let i = 0; i < pesosOpasantesGtria.length; i++) {
             retParcial[i] = pesosOpasantesGtria[i] / totalPesos * 100;
             retParcialAcum[i] = retParcial[i] + (retParcialAcum[i - 1] || 0);
@@ -41,13 +43,13 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
     }
 
     let resultados = []
-    const finos = pasanteGtria[ubicacionMalla200];
+    const finos = pasanteGtria[ubicacionMalla200]
     const gruesos = 100 - finos
-    const arenas = pasanteGtria[ubicacionMalla4] - finos;
-    const gravas = pasanteGtria[ubicacionMalla3in] - pasanteGtria[ubicacionMalla4];
-    const IP = LL - LP;
-    let clasificacionSuelo = null;
-    let simboloSuelo = null;
+    const arenas = pasanteGtria[ubicacionMalla4] - finos
+    const gravas = pasanteGtria[ubicacionMalla3in] - pasanteGtria[ubicacionMalla4]
+    const IP = LL - LP
+    let clasificacionSuelo = null
+    let simboloSuelo = null
     let Cu = null
     let Cc = null
 
@@ -246,10 +248,10 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
         resultados = [clasificacionSuelo, simboloSuelo, Cu, Cc]
     }
 
-    return [gruesos, finos, gravas, arenas, IP, ...resultados, pasanteGtria];
+    return [roundCifras(gruesos, 2), roundCifras(finos, 2), roundCifras(gravas, 2), roundCifras(arenas, 2), roundCifras(IP, 2), ...resultados, pasanteGtria]
 }
 
-function renderizarResultados(resultados) {
+function renderizarResultados(resultados, datosGraficar) {
     const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
@@ -266,9 +268,35 @@ function renderizarResultados(resultados) {
         contenedorResultados.append(spanResult)
 
     }
-    console.log(resultados[7])
 
-    // gCharts('velocidadesRepetidas', 'Granulometría', "curva-granulometria")
+    gCharts(datosGraficar, "Curva granulométrica", "curva-granulometria")
+}
+
+function ordenarResultadosParaGraficar(resultados) {
+
+    const pasantes = resultados.at(-1) // último elemento del array resultados, que corresponde al array de los pasantes
+    pasantes.pop() // con este método se elimina el último elemento que es el fondo y no se requiere
+    let mayor = Math.max(...pasantes) // se esperaría que el mayor sea 100
+    let elementoGraficar = pasantes.find((elemento) => elemento < mayor) // encuentra el primer elemento menor al mayor
+    let indiceGraficar = pasantes.indexOf(elementoGraficar) // determina el índice de ese elemento
+    const aberturaTamizmmGraficar = []
+    const pasantesGraficar = []
+    aberturaTamizmmGraficar.push(aberturaTamizmm[indiceGraficar - 1]) // escoge el tamiz que corresponde al anterior al elemento, que sería el 100
+    pasantesGraficar.push(pasantes[indiceGraficar - 1])
+    do {
+        indiceGraficar = pasantes.indexOf(elementoGraficar) // determina el índice de ese elemento
+        aberturaTamizmmGraficar.push(aberturaTamizmm[indiceGraficar])
+        pasantesGraficar.push(pasantes[indiceGraficar])
+        mayor = elementoGraficar
+        elementoGraficar = pasantes.find((elemento) => elemento < mayor) // encuentra el primer elemento menor al mayor
+    } while (elementoGraficar !== undefined)
+
+    const datosGraficar = []
+    for (let i = 0; i < pasantesGraficar.length; i++) {
+        datosGraficar.push([aberturaTamizmmGraficar[i], pasantesGraficar[i]])
+    }
+    return datosGraficar
+
 }
 
 function inicializarBotonCalcular() {
@@ -278,8 +306,8 @@ function inicializarBotonCalcular() {
         tipoCalculo = tipoCalculo === 'masa' ? true : false
         const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
         const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
-        renderizarResultados(resultados)
-
+        const datosGraficar = ordenarResultadosParaGraficar(resultados)
+        renderizarResultados(resultados, datosGraficar)
     })
 }
 
@@ -306,7 +334,7 @@ function renderizarInputsGranulometria() {
     }
 }
 
-function gCharts(datos, titulo, idElementoDom) {
+function gCharts(datosGraficar, titulo, idElementoDom) {
     google.charts.load("current", { packages: ["corechart", "line"] })
     google.charts.setOnLoadCallback(drawChart)
     function drawChart() {
@@ -314,27 +342,13 @@ function gCharts(datos, titulo, idElementoDom) {
         data.addColumn('number', 'X');
         data.addColumn('number', '% Pasa');
 
-        data.addRows([
-            [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
-            [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
-            [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-            [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-            [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-            [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-            [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-            [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-            [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-            [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-            [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-            [66, 70], [67, 72], [68, 75], [69, 80]
-        ]);
-
+        data.addRows(datosGraficar);
         var options = {
             title: titulo,
             legend: { position: 'none' },
             hAxis: {
                 title: 'Tamaño (mm)',
-                logScale: true
+                logScale: true // para que sea logarítimica
             },
             vAxis: {
                 title: '% Pasa'
