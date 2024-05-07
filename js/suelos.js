@@ -252,23 +252,37 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 }
 
 function renderizarResultados(resultados, datosGraficar) {
-    const contenedorResultados = document.querySelector(".contenedor-resultados")
+    const seccionResultados = document.querySelector(".resultados")
+    seccionResultados.innerHTML=""
+    const h2Resultados = document.createElement("h2")
+    h2Resultados.innerText="Resultados"
+    seccionResultados.append(h2Resultados)
+    const contenedorResultados = document.createElement("div")
+    contenedorResultados.className="contenedor-resultados"
+    seccionResultados.append(contenedorResultados)
+    
+    // const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
-    const titulos = ["%Gruesos:", "%Finos:", "%Gravas:", "%Arenas:", "IP:", "Clasificación:", "Símbolo:"]
+    const titulos = ["% Gruesos:", "% Finos:", "% Gravas:", "% Arenas:", "IP:", "Clasificación:", "Símbolo:"]
 
     for (let i = 0; i < 7; i++) {
-        const divTitulo = document.createElement("div")
-        divTitulo.className = "grid-item"
-        divTitulo.innerText = titulos[i]
-        contenedorResultados.append(divTitulo)
+        const spanTitulo = document.createElement("span")
+        spanTitulo.className = "titulos"
+        spanTitulo.innerText = titulos[i]
+        contenedorResultados.append(spanTitulo)
         const spanResult = document.createElement("span")
+        spanResult.className = "resultados"
         spanResult.innerText = resultados[i]
         contenedorResultados.append(spanResult)
 
     }
 
+    const contenedorCurva = document.createElement("div")
+    contenedorCurva.id="curva-granulometria"
+    seccionResultados.append(contenedorCurva)
+    
     gCharts(datosGraficar, "Curva granulométrica", "curva-granulometria")
 }
 
@@ -354,6 +368,10 @@ function gCharts(datosGraficar, titulo, idElementoDom) {
                 title: '% Pasa'
             },
             // backgroundColor: '#f1f8e9'
+            chartArea: {
+                width: '70%',
+                height: '70%'
+            }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById(idElementoDom));
