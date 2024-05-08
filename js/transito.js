@@ -4,19 +4,23 @@ const roundCifras = (num, cifras) => Math.round(num * 10 ** cifras) / 10 ** cifr
 
 
 function leerDatosEntrada() {
-    // const vel = document.getElementsByClassName("velocidades")
-    // const frec = document.getElementsByClassName("frecuencia-observada")
-    // const velocidades = []
-    // const frecuencias = []
-    // for (let i = 0; i < vel.length; i++) {
-    //     velocidades.push(parseFloat(vel[i].value) || 0)
-    //     frecuencias.push(parseFloat(frec[i].value) || 0)
-    // }
+    const vel = document.getElementsByClassName("velocidades")
+    const frec = document.getElementsByClassName("frecuencia-observada")
+    const velocidades = []
+    const frecuencias = []
+    for (let i = 0; i < vel.length; i++) {
+        velocidades.push(parseFloat(vel[i].value) || 0)
+        frecuencias.push(parseFloat(frec[i].value) || 0)
+    }
 
-    const velocidades =
-        [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
-    const frecuencias =
-        [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
+    const confiabilidad = parseFloat(document.getElementById("R").value)
+    const errorPermitido = parseFloat(document.getElementById("error-permitido").value)
+
+    // // Datos de prueba
+    // const velocidades =
+    //     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+    // const frecuencias =
+    //     [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
 
     const velocidadesRepetidas = [['Velocidad']];
 
@@ -26,10 +30,11 @@ function leerDatosEntrada() {
         }
     }
 
-    return [velocidades, frecuencias, velocidadesRepetidas]
+
+    return [velocidades, frecuencias, velocidadesRepetidas, confiabilidad, errorPermitido]
 }
 
-function crearTablaFrecuencias(datos, frecuencias) {
+function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido) {
     const n = frecuencias.reduce((acum, elem) => acum + elem, 0)
     const min = Math.min(...datos)
     const max = Math.max(...datos)
@@ -85,82 +90,14 @@ function crearTablaFrecuencias(datos, frecuencias) {
     tablaFrecuencias.push(desvEstM)
     const errorEst = roundCifras(desvEstM / Math.sqrt(n), 3)
     tablaFrecuencias.push(errorEst)
+    const K = constanteKconfiabilidad.find((el) => el.R === confiabilidad).K
+    const tamanoMinMuestra = roundCifras((K * desvEstM / errorPermitido) ** 2, 0)
+    tablaFrecuencias.push(tamanoMinMuestra)
     return tablaFrecuencias
 }
 
-function graficar(valoresX, valoresY, tipo, idElementoDom) {
-    const data = valoresX.map((k, i) => ({ x: k, y: valoresY[i] }));
-    const ctx = document.getElementById(idElementoDom).getContext("2d");
-    const myChart = new Chart(ctx, {
-        type: tipo,
-        data: {
-            datasets: [
-                {
-                    label: "Frecuencia Relativa",
-                    data: data,
-                    // backgroundColor: backgroundColor,
-                    // borderColor: ,
-                    borderWidth: 1,
-                    barPercentage: 1,
-                    categoryPercentage: 1,
-                    borderRadius: 5,
-                },
-            ],
-        },
-        options: {
-            scales: {
-                x: {
-                    type: "linear",
-                    offset: false,
-                    grid: {
-                        offset: false,
-                    },
-                    ticks: {
-                        stepSize: 5,// aquí está el ancho de las barras
-                    },
-                    title: {
-                        display: true,
-                        text: "Velocidad",
-                        font: {
-                            size: 14,
-                        },
-                    },
-                },
-                y: {
-                    // beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: "Velocidad",
-                        font: {
-                            size: 14,
-                        },
-                    },
-                },
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                },
-                tooltip: {
-                    callbacks: {
-                        title: (items) => {
-                            if (!items.length) {
-                                return "";
-                            }
-                            const item = items[0];
-                            const x = item.parsed.x;
-                            const min = x - 2.5; // Puede significar la mitad de la amplitud
-                            const max = x + 2.5; // Puede significar la mitad de la amplitud
-                            return `Velocidad: ${min} - ${max}`;
-                        },
-                    },
-                },
-            },
-        },
-    });
-}
 
-function gCharts(datos, titulo, idElementoDom) {
+function gChartsHist(datos, titulo, idElementoDom) {
     google.charts.load("current", { packages: ["corechart"] })
     google.charts.setOnLoadCallback(drawChart)
     function drawChart() {
@@ -168,6 +105,22 @@ function gCharts(datos, titulo, idElementoDom) {
         var options = {
             title: titulo,
             legend: { position: 'none' },
+            histogram: {
+                hideBucketItems: true,
+                // bucketSize: 5,
+                // numBucketsRule: 'sturges',
+            },
+            // isStacked: 'relative',
+            hAxis: {
+                title: 'Velocidades (km/h)',
+            },
+            vAxis: {
+                title: 'Frecuencia observada',
+            },
+            chartArea: {
+                width: '70%',
+                height: '70%'
+            }
         }
 
         var chart = new google.visualization.Histogram(document.getElementById(idElementoDom))
@@ -175,54 +128,153 @@ function gCharts(datos, titulo, idElementoDom) {
     }
 }
 
+function gChartsLinea(x, y, titulo, idElementoDom) {
+    const datos = [['Velocidades (km/h)', 'Frec. ac. rel.']]
+    for (let i = 0; i < x.length; i++) {
+        datos.push([x[i], y[i]])
+    }
+
+    google.charts.load("current", { packages: ["corechart"] })
+    google.charts.setOnLoadCallback(drawChart)
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(datos)
+        var options = {
+            title: titulo,
+            curveType: 'function',
+            legend: { position: 'none' },
+            hAxis: {
+                title: 'Velocidades (km/h)',
+
+            },
+            vAxis: {
+                title: 'Frecuencia acumulada relativa (%)',
+                gridlines: {
+                    count: 25,
+                },
+            },
+            chartArea: {
+                width: '70%',
+                height: '70%'
+            }
+        }
+
+        var chart = new google.visualization.LineChart(document.getElementById(idElementoDom))
+        chart.draw(data, options)
+    }
+}
+
 function modificarFilasFormVel() {
+    // Función para que al cambiar el input de la cantidad de filas efectivamente se agreguen
     const inputFilas = document.getElementById("filas-velocidad")
     inputFilas.addEventListener("input", colocarFilasFormVel)
 }
 
 function colocarFilasFormVel() {
-    const inputFilas = document.getElementById("filas-velocidad")
     const formVelocidades = document.querySelector(".formulario-velocidades")
     formVelocidades.innerHTML = `
-    <span>Velocidades (km/h)</span>
-    <span>Frecuencia observada</span>
-    `
-    const numFilas = parseInt(inputFilas.value) // Obtener el número de filas deseado
+    <div style="min-width: 11rem;">
+        <span>Velocidades:</span>
+        <span>Frecuencia observada:</span>
+    </div>
+    ` // Colocar siempre los encabezados del formulario
+    const numFilas = parseInt(document.getElementById("filas-velocidad").value) // Obtener el número de filas deseado
     // Crear y agregar filas al formulario
     for (let i = 0; i < numFilas; i++) {
         formVelocidades.innerHTML += `
+        <div>
             <input type="number" name="vel" class="velocidades" min="0" max="250" step="1" />
             <input type="number" name="frec" class="frecuencia-observada" min="0" step="1" />
+        </div>
           `
     }
 
 }
 
+function renderizarResultados(datosGraficar, resultados) {
+    const seccionResultados = document.querySelector(".resultados")
+    seccionResultados.innerHTML = ""
+    const h2Resultados = document.createElement("h2")
+    h2Resultados.innerText = "Resultados"
+    seccionResultados.append(h2Resultados)
+    const contenedorResultados = document.createElement("div")
+    contenedorResultados.className = "valores-representativos"
+    seccionResultados.append(contenedorResultados)
+
+    contenedorResultados.innerHTML = ""
+    // Colocar divs con títulos----------------------------------------------------------------------
+    const titulos = ['Velocidad media de punto:', 'Desviación estándar:', 'Error estándar de la media:', 'Tamaño apropiado de la muestra:']
+
+    for (let i = 0; i < titulos.length; i++) {
+        const spanTitulo = document.createElement("span")
+        spanTitulo.className = "titulos"
+        spanTitulo.innerText = titulos[i]
+        contenedorResultados.append(spanTitulo)
+        const spanResult = document.createElement("span")
+        spanResult.className = "resultados"
+        spanResult.innerText = resultados[i]
+        contenedorResultados.append(spanResult)
+
+    }
+
+    const contenedorHistograma = document.createElement("div")
+    contenedorHistograma.id = "histog-vel"
+    contenedorHistograma.className = "grafica"
+    seccionResultados.append(contenedorHistograma)
+
+    const contenedorCurva = document.createElement("div")
+    contenedorCurva.id = "ojiva"
+    contenedorCurva.className = "grafica"
+    seccionResultados.append(contenedorCurva)
+
+    gChartsHist(datosGraficar[0], 'Velocidades en km/h', "histog-vel")
+    gChartsLinea(datosGraficar[1], datosGraficar[2], 'Ojiva Porcentual', "ojiva")
+}
+
+function mostrarNotificacion(mensaje, color) {
+    Toastify({
+        text: mensaje,
+        duration: 1500,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: color,
+        },
+        onClick: function () { } // Callback after click
+    }).showToast()
+}
+
 function inicializarBotonCalcular() {
     const boton = document.getElementById("calcular")
     boton.addEventListener("click", () => {
-        const [velocidades, frecuencias, velocidadesRepetidas] = leerDatosEntrada()
-        // const resultados = crearTablaFrecuencias(velocidades, frecuencias)
-        // console.log(resultados)
-        // console.log(velocidadesRepetidas)
-        gCharts(velocidadesRepetidas,'Velocidades en km/h', "histog-vel")
+        const [velocidades, frecuencias, velocidadesRepetidas, confiabilidad, errorPermitido] = leerDatosEntrada()
+        const resultados = crearTablaFrecuencias(velocidades, frecuencias, confiabilidad, errorPermitido)
 
-        // graficar(resultados[2], resultados[4], "bar", "myChart")
+        if (isNaN(resultados[10]) || isNaN(resultados[11]) || isNaN(resultados[12]) || isNaN(resultados[13])) {
+            mostrarNotificacion("Ocurrió un error", "#FF4D4D")
+        }
+        else {
+            mostrarNotificacion("Cálculo exitoso", "#4CAF50")
+            renderizarResultados([velocidadesRepetidas, resultados[1], resultados[6]], [resultados[10], resultados[11], resultados[12], resultados[13]], null)
+
+        }
     })
 }
 
 
-// EJECUCIÓN DEL PROGRAMA
-// const velocidades =
-//     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79]
-// const frecuenciaObservada =
-//     [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
+const constanteKconfiabilidad = [
+    { R: 68.3, K: 1.00 },
+    { R: 89.6, K: 1.50 },
+    { R: 90.0, K: 1.64 },
+    { R: 95.0, K: 1.96 },
+    { R: 95.5, K: 2.00 },
+    { R: 98.8, K: 2.50 },
+    { R: 99.0, K: 2.58 },
+    { R: 99.7, K: 3.00 },
+];
 
-
-
-// console.log(resultados)
 colocarFilasFormVel()
 modificarFilasFormVel()
 inicializarBotonCalcular()
-
-

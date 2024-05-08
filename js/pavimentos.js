@@ -87,7 +87,7 @@ function leerDatosEntrada() {
 
   // Constantes del método------------------------------------------------------------
   // Obtener zr según la confiabilidad r
-  const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr;
+  const zr = desvNormalEstandar.find((el) => el.r === confiabilidad).zr
 
   return [moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m2, m3, nese, zr, perdidaServ, confiabilidad];
 }
@@ -133,44 +133,6 @@ function renderizarResultados(capas) {
   spanSNc3.innerText = capas[2].SNcorregido || mensajeError
   // ------------------------------------------------------------------------------------
 
-
-  // const contenedorResultados = document.querySelector(".grid-container")
-  // contenedorResultados.innerHTML = ""
-  // // Colocar divs con títulos----------------------------------------------------------------------
-  // const titulos = ["Capa", "SNe", "Espesor (cm)", "SNcorregido"]
-  // for (const titulo of titulos) {
-  //   const divTitulo = document.createElement("div");
-  //   divTitulo.className = "grid-item titulo-result";
-  //   divTitulo.innerText = titulo;
-  //   contenedorResultados.append(divTitulo);
-  // }
-
-  // // Recorrer array con las capas ya resueltas y mostrar resultados------------------------------------------
-  // for (const capa of capas) {
-  //   // Div con el número de la capa--------------------
-  //   const divCapa = document.createElement("div");
-  //   divCapa.className = "grid-item";
-  //   divCapa.innerText = capas.indexOf(capa) + 1;
-  //   contenedorResultados.append(divCapa);
-
-  //   // Div con el SNe de la capa------------------------
-  //   const divSNe = document.createElement("div");
-  //   divSNe.className = "grid-item";
-  //   divSNe.innerText = (capa.SNe || mensajeError);
-  //   contenedorResultados.append(divSNe);
-
-  //   // Div con el espesor de la capa--------------------
-  //   const divEspesor = document.createElement("div");
-  //   divEspesor.className = "grid-item";
-  //   divEspesor.innerText = (capa.dCorregidoCm || mensajeError);
-  //   contenedorResultados.append(divEspesor);
-
-  //   // Div con el SNcorregido de la capa----------------
-  //   const divSNcorregido = document.createElement("div");
-  //   divSNcorregido.className = "grid-item";
-  //   divSNcorregido.innerText = (capa.SNcorregido || mensajeError);
-  //   contenedorResultados.append(divSNcorregido);
-  // }
 }
 
 function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, moduloCapa4, m2, m3, nese, zr, perdidaServ, confiabilidad) {
@@ -190,6 +152,22 @@ function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, modul
   localStorage.setItem("datosEntrada", JSON.stringify(datosEntrada));
 }
 
+function mostrarNotificacion(mensaje, color) {
+  Toastify({
+    text: mensaje,
+    duration: 1500,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: color,
+    },
+    onClick: function () { } // Callback after click
+  }).showToast()
+}
+
 function inicializarBotonCalcular() {
   const boton = document.getElementById("boton-calcular")
   boton.addEventListener("click", () => {
@@ -199,20 +177,12 @@ function inicializarBotonCalcular() {
     const capas = crearYresolverCapas(...datosEntradaLeidos)
     // el operador ... (spread) entrega los datos por separado del array de datos leídos
     renderizarResultados(capas)
-    guardarResultadosEnStorage(...datosEntradaLeidos)
-    Toastify({
-      text: "Cálculo realizado y guardado",
-      duration: 1500,
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "right", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "#4CAF50",
-      },
-      onClick: function () { } // Callback after click
-    }).showToast()
+    if (isNaN(capas[2].SNcorregido)) {
+      mostrarNotificacion("Ocurrió un error", "#FF4D4D")
+    } else {
+      guardarResultadosEnStorage(...datosEntradaLeidos)
+      mostrarNotificacion("Cálculo exitoso", "#4CAF50")
+    }
   });
 }
 
