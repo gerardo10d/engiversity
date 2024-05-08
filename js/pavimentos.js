@@ -152,6 +152,22 @@ function guardarResultadosEnStorage(moduloCapa1, moduloCapa2, moduloCapa3, modul
   localStorage.setItem("datosEntrada", JSON.stringify(datosEntrada));
 }
 
+function mostrarNotificacion(mensaje, color) {
+  Toastify({
+    text: mensaje,
+    duration: 1500,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: color,
+    },
+    onClick: function () { } // Callback after click
+  }).showToast()
+}
+
 function inicializarBotonCalcular() {
   const boton = document.getElementById("boton-calcular")
   boton.addEventListener("click", () => {
@@ -161,20 +177,12 @@ function inicializarBotonCalcular() {
     const capas = crearYresolverCapas(...datosEntradaLeidos)
     // el operador ... (spread) entrega los datos por separado del array de datos leídos
     renderizarResultados(capas)
-    guardarResultadosEnStorage(...datosEntradaLeidos)
-    Toastify({
-      text: "Cálculo realizado y guardado",
-      duration: 1500,
-      newWindow: true,
-      close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "right", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "#4CAF50",
-      },
-      onClick: function () { } // Callback after click
-    }).showToast()
+    if (isNaN(capas[2].SNcorregido)) {
+      mostrarNotificacion("Ocurrió un error", "#FF4D4D")
+    } else {
+      guardarResultadosEnStorage(...datosEntradaLeidos)
+      mostrarNotificacion("Cálculo exitoso", "#4CAF50")
+    }
   });
 }
 

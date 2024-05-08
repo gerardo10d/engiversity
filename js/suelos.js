@@ -3,8 +3,8 @@
 const roundCifras = (num, cifras) => Math.round(num * 10 ** cifras) / 10 ** cifras
 
 function leerDatosEntrada(esConMasas) {
-    const LL = parseFloat(document.getElementById("LL").value)
-    const LP = parseFloat(document.getElementById("LP").value)
+    const LL = parseFloat(document.getElementById("LL").value) || 0
+    const LP = parseFloat(document.getElementById("LP").value) || 0
     const datosGranulometria = document.getElementsByClassName("datos-granulom")
     if (esConMasas) {
         let pesosGtria = []
@@ -253,14 +253,14 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP) {
 
 function renderizarResultados(resultados, datosGraficar) {
     const seccionResultados = document.querySelector(".resultados")
-    seccionResultados.innerHTML=""
+    seccionResultados.innerHTML = ""
     const h2Resultados = document.createElement("h2")
-    h2Resultados.innerText="Resultados"
+    h2Resultados.innerText = "Resultados"
     seccionResultados.append(h2Resultados)
     const contenedorResultados = document.createElement("div")
-    contenedorResultados.className="contenedor-resultados"
+    contenedorResultados.className = "contenedor-resultados"
     seccionResultados.append(contenedorResultados)
-    
+
     // const contenedorResultados = document.querySelector(".contenedor-resultados")
 
     contenedorResultados.innerHTML = ""
@@ -280,14 +280,15 @@ function renderizarResultados(resultados, datosGraficar) {
     }
 
     const contenedorCurva = document.createElement("div")
-    contenedorCurva.id="curva-granulometria"
+    contenedorCurva.id = "curva-granulometria"
     seccionResultados.append(contenedorCurva)
-    
+
     gCharts(datosGraficar, "Curva granulométrica", "curva-granulometria")
 }
 
 function ordenarResultadosParaGraficar(resultados) {
-
+    // Esta función se encarga de eliminar los valores repetidos que aparecen en el array de pasantes
+    // porque para graficar solo debe aparecer los datos individuales con el tamiz que le corresponde
     const pasantes = resultados.at(-1) // último elemento del array resultados, que corresponde al array de los pasantes
     pasantes.pop() // con este método se elimina el último elemento que es el fondo y no se requiere
     let mayor = Math.max(...pasantes) // se esperaría que el mayor sea 100
@@ -313,6 +314,22 @@ function ordenarResultadosParaGraficar(resultados) {
 
 }
 
+function mostrarNotificacion(mensaje, color) {
+    Toastify({
+        text: mensaje,
+        duration: 1500,
+        newWindow: true,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: color,
+        },
+        onClick: function () { } // Callback after click
+    }).showToast()
+}
+
 function inicializarBotonCalcular() {
     const botonCalcular = document.getElementById("boton-calcular")
     botonCalcular.addEventListener("click", () => {
@@ -320,8 +337,13 @@ function inicializarBotonCalcular() {
         tipoCalculo = tipoCalculo === 'masa' ? true : false
         const datosEntradaLeidos = leerDatosEntrada(tipoCalculo)
         const resultados = resolverGranulometria(tipoCalculo, ...datosEntradaLeidos)
-        const datosGraficar = ordenarResultadosParaGraficar(resultados)
-        renderizarResultados(resultados, datosGraficar)
+        if (isNaN(resultados[0]) || isNaN(resultados[1]) || isNaN(resultados[2]) || isNaN(resultados[3])) {
+            mostrarNotificacion("Ocurrió un error", "#FF4D4D")
+        } else {
+            mostrarNotificacion("Cálculo exitoso", "#4CAF50")
+            const datosGraficar = ordenarResultadosParaGraficar(resultados)
+            renderizarResultados(resultados, datosGraficar)
+        }
     })
 }
 
