@@ -291,7 +291,7 @@ nav.navbar ul.navbar-lista {
     #main-transito section h3 {
       text-align: center;
       margin: 1rem auto; }
-  #main-transito section.datos-entrada form {
+  #main-transito section.datos-entrada form.formulario-velocidades {
     display: grid;
     max-width: 30rem;
     width: 90%;
@@ -300,10 +300,10 @@ nav.navbar ul.navbar-lista {
     row-gap: 0.3rem;
     align-items: center;
     justify-items: center; }
-    #main-transito section.datos-entrada form span {
+    #main-transito section.datos-entrada form.formulario-velocidades span {
       color: #333333;
       text-align: center; }
-    #main-transito section.datos-entrada form input {
+    #main-transito section.datos-entrada form.formulario-velocidades input {
       min-width: 2rem;
       max-width: 4rem;
       padding: 0.2rem;

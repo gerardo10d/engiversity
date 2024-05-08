@@ -14,6 +14,7 @@ function leerDatosEntrada() {
     // }
 
     const confiabilidad = parseFloat(document.getElementById("R").value)
+    const errorPermitido = parseFloat(document.getElementById("error-permitido").value)
 
     const velocidades =
         [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
@@ -30,10 +31,10 @@ function leerDatosEntrada() {
     }
 
 
-    return [velocidades, frecuencias, velocidadesRepetidas, confiabilidad]
+    return [velocidades, frecuencias, velocidadesRepetidas, confiabilidad, errorPermitido]
 }
 
-function crearTablaFrecuencias(datos, frecuencias, confiabilidad) {
+function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido) {
     const n = frecuencias.reduce((acum, elem) => acum + elem, 0)
     const min = Math.min(...datos)
     const max = Math.max(...datos)
@@ -89,7 +90,6 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad) {
     tablaFrecuencias.push(desvEstM)
     const errorEst = roundCifras(desvEstM / Math.sqrt(n), 3)
     tablaFrecuencias.push(errorEst)
-    const errorPermitido = 1.5 // km/h de 1 a 2 abierto
     const K = constanteKconfiabilidad.find((el) => el.R === confiabilidad).K
     const tamanoMinMuestra = roundCifras((K * desvEstM / errorPermitido) ** 2, 0)
     tablaFrecuencias.push(tamanoMinMuestra)
@@ -241,13 +241,12 @@ function modificarFilasFormVel() {
 }
 
 function colocarFilasFormVel() {
-    const inputFilas = document.getElementById("filas-velocidad")
     const formVelocidades = document.querySelector(".formulario-velocidades")
     formVelocidades.innerHTML = `
     <span>Velocidades (km/h)</span>
     <span>Frecuencia observada</span>
     ` // Colocar siempre los encabezados del formulario
-    const numFilas = parseInt(inputFilas.value) // Obtener el número de filas deseado
+    const numFilas = parseInt(document.getElementById("filas-velocidad").value) // Obtener el número de filas deseado
     // Crear y agregar filas al formulario
     for (let i = 0; i < numFilas; i++) {
         formVelocidades.innerHTML += `
@@ -301,8 +300,8 @@ function renderizarResultados(datosGraficar, resultados) {
 function inicializarBotonCalcular() {
     const boton = document.getElementById("calcular")
     boton.addEventListener("click", () => {
-        const [velocidades, frecuencias, velocidadesRepetidas, confiabilidad] = leerDatosEntrada()
-        const resultados = crearTablaFrecuencias(velocidades, frecuencias, confiabilidad)
+        const [velocidades, frecuencias, velocidadesRepetidas, confiabilidad, errorPermitido] = leerDatosEntrada()
+        const resultados = crearTablaFrecuencias(velocidades, frecuencias, confiabilidad, errorPermitido)
         // console.log(resultados)
         renderizarResultados([velocidadesRepetidas, resultados[1], resultados[6]], [resultados[10], resultados[11], resultados[12], resultados[13]], null)
 

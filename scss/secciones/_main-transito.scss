@@ -19,13 +19,12 @@
 
   // Para la primera sección
   section.datos-entrada {
-    form {
+    form.formulario-velocidades {
       display: grid;
       max-width: 30rem;
       width: 90%;
       margin: 1rem auto;
       grid-template-columns: 5fr 6fr;
-      // grid-template-rows: repeat(13, 1fr);
       row-gap: 0.3rem;
       align-items: center;
       justify-items: center;
