@@ -108,7 +108,7 @@ function gChartsHist(datos, titulo, idElementoDom) {
             histogram: {
                 hideBucketItems: true,
                 // bucketSize: 5,
-                // numBucketsRule: 'sturges',
+                numBucketsRule: 'sturges',
             },
             // isStacked: 'relative',
             hAxis: {
