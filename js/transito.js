@@ -18,9 +18,9 @@ function leerDatosEntrada() {
 
     // // Datos de prueba
     // const velocidades =
-    //     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+    //     [30, 35, 36, 42, 45, 48, 50, 52, 62, 63, 65, 68, 70, 72, 85, 89]
     // const frecuencias =
-    //     [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
+    //     [1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2]
 
     const velocidadesRepetidas = [['Velocidad']];
 
@@ -38,10 +38,12 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     const n = frecuencias.reduce((acum, elem) => acum + elem, 0)
     const min = Math.min(...datos)
     const max = Math.max(...datos)
-    const m = Math.ceil(1 + 3.3 * Math.log10(n)) // número de intervalos
+    const m = Math.round(1 + 3.3 * Math.log10(n)) // número de intervalos
     const intAncho = Math.round((max - min) / m)
-    const intNum = Math.ceil((max - min) / intAncho) + 1
-    // console.log(n, m, min, max, intAncho, intNum)
+    
+    // console.log(n, m, min, max, intAncho)
+    // console.log(datos)
+    // console.log(frecuencias)
 
     const tablaFrecuencias = [[], [], [], [], [], [], [], [], [], []]
 
@@ -53,13 +55,13 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     let frecPorMarcaClase = 0
     let frecPorMarcaClaseCuad = 0
 
-    for (let i = 0; i < intNum; i++) {
-        intMarcaClase = min + i * intAncho
-        tablaFrecuencias[2].push(intMarcaClase)
-        const intLimInf = intMarcaClase - intAncho / 2
+    for (let i = 1; i <= m; i++) {
+        const intLimInf = min + (i - 1) * intAncho
         tablaFrecuencias[0].push(intLimInf)
-        const intLimSup = intMarcaClase + intAncho / 2
+        const intLimSup = intLimInf + 12
         tablaFrecuencias[1].push(intLimSup)
+        intMarcaClase = (intLimInf + intLimSup) / 2
+        tablaFrecuencias[2].push(intMarcaClase)
         let frecAbs = 0
         let frecRel = 0
 
@@ -93,6 +95,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     const K = constanteKconfiabilidad.find((el) => el.R === confiabilidad).K
     const tamanoMinMuestra = roundCifras((K * desvEstM / errorPermitido) ** 2, 0)
     tablaFrecuencias.push(tamanoMinMuestra)
+    // console.log(tablaFrecuencias)
     return tablaFrecuencias
 }
 
