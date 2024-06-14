@@ -18,6 +18,13 @@ function leerDatosEntrada() {
 
     // // Datos de prueba
     // const velocidades =
+    //     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+    // const frecuencias =
+    //     [1, 0, 0, 0, 1, 2, 0, 2, 4, 0, 4, 0, 6, 8, 0, 13, 0, 14, 15, 0, 15, 16, 0, 17, 0, 15, 15, 0, 10, 9, 0, 8, 0, 7, 6, 0, 3, 2, 0, 2, 0, 2, 1, 0, 1, 1]
+
+
+    // // Datos de prueba
+    // const velocidades =
     //     [30, 35, 36, 42, 45, 48, 50, 52, 62, 63, 65, 68, 70, 72, 85, 89]
     // const frecuencias =
     //     [1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2]
@@ -34,13 +41,29 @@ function leerDatosEntrada() {
     return [velocidades, frecuencias, velocidadesRepetidas, confiabilidad, errorPermitido]
 }
 
+function definirNumeroIntervalos(n) {
+    let m
+    if (n >= 50 && n < 1e2) {
+        m = 8
+    } else if (n >= 1e2 && n < 1e3) {
+        m = 10
+    } else if (n >= 1e3 && n < 1e4) {
+        m = 14
+    } else if (n >= 1e4 && n < 1e5) {
+        m = 17
+    } else {
+        m = Math.round(1 + 3.3 * Math.log10(n))
+    }
+    return m
+}
+
 function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido) {
-    const n = frecuencias.reduce((acum, elem) => acum + elem, 0)
-    const min = Math.min(...datos)
-    const max = Math.max(...datos)
-    const m = Math.round(1 + 3.3 * Math.log10(n)) // número de intervalos
-    const intAncho = Math.round((max - min) / m)
-    
+    const n = frecuencias.reduce((acum, elem) => acum + elem, 0) // Tamaño de la muestra
+    const min = Math.min(...datos) // Velocidad menor
+    const max = Math.max(...datos) // Velocidad mayor
+    const m = definirNumeroIntervalos(n)
+    const intAncho = Math.round((max - min) / m) // Ancho del intervalo
+
     // console.log(n, m, min, max, intAncho)
     // console.log(datos)
     // console.log(frecuencias)
@@ -58,7 +81,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     for (let i = 1; i <= m; i++) {
         const intLimInf = min + (i - 1) * intAncho
         tablaFrecuencias[0].push(intLimInf)
-        const intLimSup = intLimInf + 12
+        const intLimSup = intLimInf + intAncho
         tablaFrecuencias[1].push(intLimSup)
         intMarcaClase = (intLimInf + intLimSup) / 2
         tablaFrecuencias[2].push(intMarcaClase)
