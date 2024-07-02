@@ -29,6 +29,12 @@ function leerDatosEntrada() {
     // const frecuencias =
     //     [1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2]
 
+    // // Datos de prueba
+    // const velocidades =
+    //     [25, 27, 35, 36, 39, 40, 42, 55, 60, 63, 65, 68, 70, 73, 75, 80, 85]
+    // const frecuencias =
+    //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3, 1]
+
     const velocidadesRepetidas = [['Velocidad']];
 
     for (let i = 0; i < velocidades.length; i++) {
@@ -61,10 +67,11 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     const n = frecuencias.reduce((acum, elem) => acum + elem, 0) // Tamaño de la muestra
     const min = Math.min(...datos) // Velocidad menor
     const max = Math.max(...datos) // Velocidad mayor
+    const frecMax = frecuencias[datos.indexOf(max)] // Encontrar la frecuencia del dato mayor para aumentarla en el último intervalo, ya que no lo considera en el conteo normal por contar los datos menores al límite superior del intervalo, entonces el máximo valor queda por fuera del conteo
     const m = definirNumeroIntervalos(n)
     const intAncho = Math.round((max - min) / m) // Ancho del intervalo
 
-    // console.log(n, m, min, max, intAncho)
+    // console.log("Tamaño de la muestra: ", n, "Núm. intervalos: ", m, "Mínimo: ", min, "Máximo: ", max, "Ancho del intervalo: ", intAncho)
     // console.log(datos)
     // console.log(frecuencias)
 
@@ -95,6 +102,11 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
             }
             datosIndice++
         }
+        
+        if (i==m) {
+            frecAbs += frecMax // hay que agregar la frecuencia del dato mayor, porque en el while anterior no la considera
+        }
+        
         frecAcumAbs = frecAcumAbs + frecAbs
         frecAcumRel = roundCifras(frecAcumAbs / n * 100, 2)
         marcaClaseCuadrado = intMarcaClase ** 2
