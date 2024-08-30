@@ -125,7 +125,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
     tablaFrecuencias.push(media)
     const desvEstM = roundCifras(Math.sqrt((tablaFrecuencias[9].reduce((acum, elem) => acum + elem, 0) - 1 / n * (tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0)) ** 2) / (n - 1)), 2)
     tablaFrecuencias.push(desvEstM)
-    const errorEst = roundCifras(desvEstM / Math.sqrt(n), 3)
+    const errorEst = roundCifras(desvEstM / Math.sqrt(n), 2)
     tablaFrecuencias.push(errorEst)
     const K = constanteKconfiabilidad.find((el) => el.R === confiabilidad).K
     const tamanoMinMuestra = roundCifras((K * desvEstM / errorPermitido) ** 2, 0)
