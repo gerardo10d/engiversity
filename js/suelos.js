@@ -86,7 +86,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMa
             }
         }
 
-        return [clasificacionSuelo, simboloSuelo]
+        return [clasificacionSuelo, simboloSuelo, "N/A", "N/A"]
     }
     function resolverFinos(clasificacionSuelo, simboloSuelo, LL, IP) {
         if (LL < 50) {
@@ -109,6 +109,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMa
                 simboloSuelo = "MH"
             }
         }
+
         return [clasificacionSuelo, simboloSuelo]
     }
 
