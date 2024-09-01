@@ -102,11 +102,11 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
             }
             datosIndice++
         }
-        
-        if (i==m) {
+
+        if (i == m) {
             frecAbs += frecMax // hay que agregar la frecuencia del dato mayor, porque en el while anterior no la considera
         }
-        
+
         frecAcumAbs = frecAcumAbs + frecAbs
         frecAcumRel = roundCifras(frecAcumAbs / n * 100, 2)
         marcaClaseCuadrado = intMarcaClase ** 2
@@ -121,6 +121,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
         tablaFrecuencias[8].push(frecPorMarcaClase)
         tablaFrecuencias[9].push(frecPorMarcaClaseCuad)
     }
+
     const media = roundCifras(tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0) / n, 1)
     tablaFrecuencias.push(media)
     const desvEstM = roundCifras(Math.sqrt((tablaFrecuencias[9].reduce((acum, elem) => acum + elem, 0) - 1 / n * (tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0)) ** 2) / (n - 1)), 2)
@@ -292,6 +293,7 @@ function inicializarBotonCalcular() {
 
         if (isNaN(resultados[10]) || isNaN(resultados[11]) || isNaN(resultados[12]) || isNaN(resultados[13])) {
             mostrarNotificacion("Ocurrió un error", "#FF4D4D")
+            renderizarResultados([velocidadesRepetidas, resultados[1], resultados[6]], [resultados[10], resultados[11], resultados[12], resultados[13]], null)
         }
         else {
             mostrarNotificacion("Cálculo exitoso", "#4CAF50")
