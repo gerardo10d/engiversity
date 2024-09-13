@@ -7,6 +7,8 @@ function leerDatosEntrada() {
     const LP = parseFloat(document.getElementById("LP").value) || 0
     const datosGranulometria = document.getElementsByClassName("datos-granulom")
     let indiceMallaN4
+    let indiceMallaN10
+    let indiceMallaN40
     let indiceMallaN200
     const arrayGtria = []
     const arrayAberturaTamizmm = []
@@ -18,15 +20,22 @@ function leerDatosEntrada() {
         if (i == 9) {
             indiceMallaN4 = arrayGtria.length - 1
         }
+        if (i == 11) {
+            indiceMallaN10 = arrayGtria.length - 1
+        }
+        if (i == 15) {
+            indiceMallaN40 = arrayGtria.length - 1
+        }
         if (i == 21) {
             indiceMallaN200 = arrayGtria.length - 1
         }
+
     }
-    return [arrayGtria, LL, LP, indiceMallaN4, indiceMallaN200, arrayAberturaTamizmm]
+    return [arrayGtria, LL, LP, indiceMallaN4, indiceMallaN200, arrayAberturaTamizmm, indiceMallaN10, indiceMallaN40]
 
 }
 
-function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMallaN4, indiceMallaN200, arrayAberturaTamizmm) {
+function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMallaN4, indiceMallaN200, arrayAberturaTamizmm, indiceMallaN10, indiceMallaN40) {
     let pasanteGtria = []
     if (esConPesos) {
         const totalPesos = pesosOpasantesGtria.reduce((acumulador, elemento) => acumulador + elemento, 0)
@@ -47,11 +56,15 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMa
     const gruesos = 100 - finos
     const arenas = pasanteGtria[indiceMallaN4] - finos
     const gravas = 100 - pasanteGtria[indiceMallaN4]
+    const pasa10 = pasanteGtria[indiceMallaN10]
+    const pasa40 = pasanteGtria[indiceMallaN40]
     const IP = LL - LP
     let clasificacionSuelo = null
     let simboloSuelo = null
-    let Cu = null
-    let Cc = null
+    let clasificacionSueloAASHTO = null
+    let indiceGrupoAASHTO = null
+    let Cu = "N/A"
+    let Cc = "N/A"
 
 
     function resolverSufijosYprefijos(clasificacionSuelo, simboloSuelo, gruesos, arenas, gravas) {
@@ -110,7 +123,7 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMa
             }
         }
 
-        return [clasificacionSuelo, simboloSuelo]
+        return [clasificacionSuelo, simboloSuelo, "N/A", "N/A"]
     }
 
     if (finos >= 50) { // Suelos finos
@@ -252,7 +265,61 @@ function resolverGranulometria(esConPesos, pesosOpasantesGtria, LL, LP, indiceMa
         resultados = [clasificacionSuelo, simboloSuelo, Cu, Cc]
     }
 
-    return [roundCifras(gruesos, 2), roundCifras(finos, 2), roundCifras(gravas, 2), roundCifras(arenas, 2), roundCifras(IP, 2), ...resultados, arrayAberturaTamizmm, pasanteGtria]
+    // ----------- AASHTO---------------------
+    
+    if (pasa10 <= 50 && pasa40 <= 30 && finos <= 15 && IP <= 6) {
+        clasificacionSueloAASHTO = "A-1-a"
+        indiceGrupoAASHTO = 0
+    } else if (pasa40 <= 50 && finos <= 25 && IP <= 6) {
+        clasificacionSueloAASHTO = "A-1-b"
+        indiceGrupoAASHTO = 0
+    } else if (pasa40 >= 51 && finos <= 10 && IP == 0) {
+        clasificacionSueloAASHTO = "A-3"
+        indiceGrupoAASHTO = 0
+    } else if (finos <= 35) {
+        if (IP <= 10) {
+            if (LL <= 40) {
+                clasificacionSueloAASHTO = "A-2-4"
+                indiceGrupoAASHTO = 0
+            } else {
+                clasificacionSueloAASHTO = "A-2-5"
+                indiceGrupoAASHTO = 0
+            }
+        } else {
+            if (LL <= 40) {
+                clasificacionSueloAASHTO = "A-2-6"
+                indiceGrupoAASHTO = roundCifras(0.01 * (finos - 15) * (IP - 10), 0)
+            } else {
+                clasificacionSueloAASHTO = "A-2-7"
+                indiceGrupoAASHTO = roundCifras(0.01 * (finos - 15) * (IP - 10), 0)
+            }
+        }
+    } else {
+        if (IP <= 10) {
+            if (LL <= 40) {
+                clasificacionSueloAASHTO = "A-4"
+                indiceGrupoAASHTO = roundCifras((finos - 35) * (0.2 + 0.005 * (LL - 40)) + 0.01 * (finos - 15) * (IP - 10), 0)
+            } else {
+                clasificacionSueloAASHTO = "A-5"
+                indiceGrupoAASHTO = roundCifras((finos - 35) * (0.2 + 0.005 * (LL - 40)) + 0.01 * (finos - 15) * (IP - 10), 0)
+            }
+        } else {
+            if (LL <= 40) {
+                clasificacionSueloAASHTO = "A-6"
+                indiceGrupoAASHTO = roundCifras((finos - 35) * (0.2 + 0.005 * (LL - 40)) + 0.01 * (finos - 15) * (IP - 10), 0)
+            } else {
+                if (IP <= LL - 30) {
+                    clasificacionSueloAASHTO = "A-7-5"
+                    indiceGrupoAASHTO = roundCifras((finos - 35) * (0.2 + 0.005 * (LL - 40)) + 0.01 * (finos - 15) * (IP - 10), 0)
+                } else {
+                    clasificacionSueloAASHTO = "A-7-6"
+                    indiceGrupoAASHTO = roundCifras((finos - 35) * (0.2 + 0.005 * (LL - 40)) + 0.01 * (finos - 15) * (IP - 10), 0)
+                }
+            }
+        }
+    }
+
+    return [roundCifras(gruesos, 2), roundCifras(finos, 2), roundCifras(gravas, 2), roundCifras(arenas, 2), roundCifras(IP, 2), ...resultados, clasificacionSueloAASHTO, indiceGrupoAASHTO, arrayAberturaTamizmm, pasanteGtria]
 }
 
 function renderizarResultados(resultados, datosGraficar) {
@@ -269,7 +336,7 @@ function renderizarResultados(resultados, datosGraficar) {
 
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
-    const titulos = ["% Gruesos:", "% Finos:", "% Gravas:", "% Arenas:", "IP:", "Clasificación:", "Símbolo:", "Cu:", "Cc:"]
+    const titulos = ["% Gruesos:", "% Finos:", "% Gravas:", "% Arenas:", "IP:", "Clasificación:", "Símbolo:", "Cu:", "Cc:", "AASHTO:", "IG:"]
 
     for (let i = 0; i < titulos.length; i++) {
         const spanTitulo = document.createElement("span")
