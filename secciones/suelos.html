@@ -33,12 +33,32 @@
     </nav>
     <main id="main-suelos">
       <section class="clasificacion">
-        <h1>Sistema Unificado de Clasificación de Suelos</h1>
+        <h1>Sistemas de Clasificación de Suelos</h1>
         <p>
-          Este sistema se fundamenta en la norma ASTM D2487 y se emplea con
-          fines de ingeniería. Su enfoque se centra en la evaluación en
-          laboratorio de las características granulométricas, el límite líquido
-          y el índice de plasticidad del suelo.
+          Su enfoque se centra en la evaluación en laboratorio de las
+          características granulométricas, el límite líquido y el índice de
+          plasticidad del suelo. En esta aplicación, solo se consideran suelos
+          inorgánicos.
+        </p>
+        <h3>Sistema Unificado (SUCS)</h3>
+        <p>
+          Este sistema se fundamenta en la norma ASTM D2487. En este sistema,
+          los suelos granulares contienen más del 50 % de material retenido en
+          la malla #200 (0.075 mm). En cambio, los suelos finos tienen mínimo un
+          50 % de material que pasa por dicha malla. El sistema unificado
+          clasifica los suelos inorgánicos en cuatro grupos principales, gravas
+          (G), arenas (S), limos (M) y arcillas (C).
+        </p>
+        <h3>Sistema AASHTO</h3>
+        <p>
+          En este sistema, los suelos granulares contienen máximo un 35 % de
+          material que pasa por la malla #200 (0.075 mm). En cambio, los suelos
+          finos tienen más del 35 % de material que pasa por dicha malla. El
+          sistema AASHTO clasifica los suelos inorgánicos en siete grupos
+          principales, que van del A-1 al A-7. Los primeros tres grupos, A-1 a
+          A-3, corresponden a suelos granulares (de grano grueso), mientras que
+          los últimos cuatro, A-4 a A-7, corresponden a suelos arcillosos o
+          limosos (de grano fino).
         </p>
         <fieldset>
           <h4>Tipo de cálculo:</h4>
@@ -53,12 +73,7 @@
             <label for="pasante">Pasante</label>
           </div>
           <div>
-            <input
-              type="radio"
-              id="masa"
-              name="tipo-calculo"
-              value="masa"
-            />
+            <input type="radio" id="masa" name="tipo-calculo" value="masa" />
             <label for="masa">Masa retenida</label>
           </div>
         </fieldset>
@@ -81,8 +96,7 @@
           <button type="button" id="boton-calcular">Calcular</button>
         </div>
       </section>
-      <section class="resultados">
-      </section>
+      <section class="resultados"></section>
     </main>
     <footer>
       <p>Aplicación web creada por Mag. Ing. Gerardo Andrés Dorado Jurado</p>

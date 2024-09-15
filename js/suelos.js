@@ -336,7 +336,7 @@ function renderizarResultados(resultados, datosGraficar) {
 
     contenedorResultados.innerHTML = ""
     // Colocar divs con títulos----------------------------------------------------------------------
-    const titulos = ["% Gruesos:", "% Finos:", "% Gravas:", "% Arenas:", "IP:", "Clasificación:", "Símbolo:", "Cu:", "Cc:", "AASHTO:", "IG:"]
+    const titulos = ["% Gruesos:", "% Finos:", "% Gravas:", "% Arenas:", "IP:", "SUCS:", "Símbolo:", "Cu:", "Cc:", "AASHTO:", "IG:"]
 
     for (let i = 0; i < titulos.length; i++) {
         const spanTitulo = document.createElement("span")
