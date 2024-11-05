@@ -16,6 +16,19 @@ function leerDatosEntrada() {
     const confiabilidad = parseFloat(document.getElementById("R").value)
     const errorPermitido = parseFloat(document.getElementById("error-permitido").value)
 
+    // Datos de prueba
+    // const velocidades =
+    //     [30, 35, 36, 42, 45, 48, 50, 52, 62, 63, 65, 68, 70, 72, 85, 89]
+    // const frecuencias =
+    //     [1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2]
+
+    // const velocidades = [20, 25, 30, 35, 36, 37, 42, 45, 50, 55, 61, 66, 69, 71, 75, 77, 78, 80, 82, 85]
+    // const frecuencias = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+    // const confiabilidad = 95.0
+    // const errorPermitido = 2.0
+
+
     // // Datos de prueba
     // const velocidades =
     //     [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
@@ -103,7 +116,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
             datosIndice++
         }
 
-        if (i == m) {
+        if (i == m && max == intLimSup) {
             frecAbs += frecMax // hay que agregar la frecuencia del dato mayor, porque en el while anterior no la considera
         }
 
@@ -122,7 +135,7 @@ function crearTablaFrecuencias(datos, frecuencias, confiabilidad, errorPermitido
         tablaFrecuencias[9].push(frecPorMarcaClaseCuad)
     }
 
-    const media = roundCifras(tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0) / n, 1)
+    const media = roundCifras(tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0) / n, 2)
     tablaFrecuencias.push(media)
     const desvEstM = roundCifras(Math.sqrt((tablaFrecuencias[9].reduce((acum, elem) => acum + elem, 0) - 1 / n * (tablaFrecuencias[8].reduce((acum, elem) => acum + elem, 0)) ** 2) / (n - 1)), 2)
     tablaFrecuencias.push(desvEstM)
